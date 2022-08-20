@@ -1,11 +1,14 @@
+import { getApps, initializeApp } from "firebase/app";
 import { init } from "next-firebase-auth";
+
+import config from "config";
 
 const initAuth = () => {
 	init({
-		authPageURL: "/signin",
-		appPageURL: "/",
-		loginAPIEndpoint: "/api/auth/signin",
-		logoutAPIEndpoint: "/api/auth/signout",
+		authPageURL: config.router.signin.path,
+		appPageURL: config.router.home.path,
+		loginAPIEndpoint: config.api.signin.route,
+		logoutAPIEndpoint: config.api.signout.route,
 		onLoginRequestError: err => {
 			console.error(err);
 		},
@@ -27,7 +30,7 @@ const initAuth = () => {
 			projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
 		},
 		cookies: {
-			name: "NextBDE",
+			name: "BDE-CESI-Rouen",
 			keys: [
 				process.env.COOKIE_SECRET_CURRENT,
 				process.env.COOKIE_SECRET_PREVIOUS,
@@ -48,5 +51,18 @@ const initAuth = () => {
 		},
 	});
 };
+
+if (!getApps.length) {
+	initializeApp({
+		apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+		appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+		authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+		databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+		measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+		messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+		projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+		storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+	});
+}
 
 export default initAuth;

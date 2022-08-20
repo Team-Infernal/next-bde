@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import { withAuthUser } from "next-firebase-auth";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
@@ -6,12 +7,13 @@ import Navbar from "components/layout/Navbar";
 import Footer from "components/layout/Footer";
 
 import initAuth from "lib/initAuth";
-import { withAuthUser } from "next-firebase-auth";
+
+import "styles/globals.css";
 
 config.autoAddCss = false;
 initAuth();
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const BDECesiRouen = ({ Component, pageProps }: AppProps) => {
 	return (
 		<>
 			<Navbar />
@@ -23,4 +25,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 	);
 };
 
-export default withAuthUser()(MyApp as () => JSX.Element);
+export default withAuthUser()(BDECesiRouen as () => JSX.Element);

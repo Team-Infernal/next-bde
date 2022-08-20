@@ -1,15 +1,17 @@
 module.exports = {
-	content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+	content: [
+		"./pages/**/*.{js,jsx,ts,tsx}",
+		"./components/**/*.{js,jsx,ts,tsx}",
+	],
 	theme: {
 		extend: {},
 	},
-	darkMode: "class",
 	plugins: [require("daisyui")],
 	daisyui: {
 		themes: [
 			{
 				light: {
-					primary: "#6419E6",
+					primary: "#0DA99D",
 					secondary: "#D926A9",
 					accent: "#1FB2A6",
 					neutral: "#ffffff",
@@ -19,8 +21,10 @@ module.exports = {
 					warning: "#FBBD23",
 					error: "#F87272",
 				},
+			},
+			{
 				dark: {
-					primary: "#6419E6",
+					primary: "#0DA99D",
 					secondary: "#D926A9",
 					accent: "#1FB2A6",
 					neutral: "#191D24",
