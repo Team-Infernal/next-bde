@@ -12,17 +12,17 @@ const errMsg = (errorCode: string): string => {
 
 const errors: tErrors = {
 	"auth/email-already-exists":
-		"Cette adresse mail est déjà utilisée. Veuillez réessayer avec une autre.",
+		"Cette adresse mail est déjà utilisée. Veuillez réessayer avec une autre",
 	"auth/email-already-in-use":
-		"Cette adresse mail est déjà utilisée. Veuillez réessayer avec une autre.",
-	"auth/invalid-email": "L'adresse mail est invalide.",
-	"auth/invalid-password": "Le mot de passe est invalide.",
-	"auth/missing-email": "Veuillez renseigner votre adresse mail.",
+		"Cette adresse mail est déjà utilisée. Veuillez réessayer avec une autre",
+	"auth/invalid-email": "L'adresse mail est invalide",
+	"auth/invalid-password": "Le mot de passe est invalide",
+	"auth/missing-email": "Veuillez renseigner votre adresse mail",
 	"auth/requires-recent-login":
-		"Cette opération nécessite que vous vous reconnectiez.",
-	"auth/user-not-found": "Votre adresse mail et/ou mot de passe est incorrect.",
-	"auth/wrong-password": "Votre adresse mail et/ou mot de passe est incorrect.",
-	default: "Une erreur est survenue. Veuillez réessayer.",
+		"Cette opération nécessite que vous vous reconnectiez",
+	"auth/user-not-found": "Votre adresse mail et/ou mot de passe est incorrect",
+	"auth/wrong-password": "Votre adresse mail et/ou mot de passe est incorrect",
+	default: "Une erreur est survenue. Veuillez réessayer",
 };
 
 type tErrors = {

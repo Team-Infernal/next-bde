@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
 	AuthAction,
@@ -8,143 +9,156 @@ import {
 } from "next-firebase-auth";
 import cn from "classnames";
 
-import { verifyEmail, verifyPassword } from "utils/formVerification";
 import config from "config";
+
+import { verifyEmail, passChars } from "utils/formVerification";
+import errMsg from "utils/firebaseErrors";
+import sleep from "utils/sleep";
+import Link from "next/link";
 
 const SignUp = () => {
 	const [email, setEmail] = useState("");
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
-	const [errors, setErrors] = useState<string[]>([]);
-	const [emailError, setEmailError] = useState(false);
-	const [firstNameError, setFirstNameError] = useState(false);
-	const [lastNameError, setLastNameError] = useState(false);
-	const [passwordError, setPasswordError] = useState(false);
 
 	const router = useRouter();
 
+	const handleInputChange = (
+		changeFunc: React.Dispatch<React.SetStateAction<string>>,
+		data: string
+	) => {
+		setError("");
+		changeFunc(data);
+	};
+
 	const handleSignUpClick = async () => {
-		setErrors([]);
-		setEmailError(false);
-		setFirstNameError(false);
-		setLastNameError(false);
-		setPasswordError(false);
-
-		const emailVerification = verifyEmail(email);
-		const passwordVerification = verifyPassword(password);
-
-		if (!firstName) {
-			setFirstNameError(true);
-			setErrors(errors => [...errors, "Veuillez renseigner votre prénom."]);
+		if (!firstName || !lastName) {
+			setError("Veuillez entrer votre nom et prénom");
+			return;
 		}
 
-		if (!lastName) {
-			setLastNameError(true);
-			setErrors(errors => [...errors, "Veuillez renseigner votre nom."]);
+		if (!email) {
+			setError("Veuillez entrer votre adresse mail");
+			return;
 		}
 
-		if (!emailVerification.isValid) {
-			setEmailError(true);
-			setErrors(errors => [...errors, ...emailVerification.errors]);
+		if (!verifyEmail(email).isValid) {
+			setError("Veuillez entrer une adresse mail valide");
+			return;
 		}
 
-		// if (!passwordVerification.isValid) {
-		// 	setPasswordError(true);
-		// 	setErrors(errors => [...errors, ...passwordVerification.errors]);
-		// }
+		if (!password) {
+			setError("Veuillez entrer votre mot de passe");
+			return;
+		}
+
+		if (password.length < 8 || password.length > 128) {
+			setError("Le mot de passe doit contenir entre 8 et 128 caractères");
+			return;
+		}
+
+		if (
+			!password.split("").some(l => passChars.lowercase.includes(l)) ||
+			!password.split("").some(l => passChars.uppercase.includes(l)) ||
+			!password.split("").some(l => passChars.numbers.includes(l)) ||
+			!password.split("").some(l => passChars.special.includes(l))
+		) {
+			setError(
+				"Le mot de passe doit contenir au moins 1 lettre minuscule, 1 lettre majuscule, 1 chiffre et 1 caractère spécial"
+			);
+			return;
+		}
+
+		if (!passwordConfirm) {
+			setError("Veuillez confirmer votre mot de passe");
+			return;
+		}
 
 		if (password !== passwordConfirm) {
-			setPasswordError(true);
-			setErrors(errors => [
-				...errors,
-				"Les mots de passe ne sont pas les mêmes.",
-			]);
-		}
-
-		if (errors.length !== 0) {
+			setError("Les mots de passe ne sont pas les mêmes");
 			return;
 		}
 
 		setLoading(true);
 
+		const cleanEmail = email.trim().toLowerCase();
+		const cleanPassword = password.trim();
+		const cleanFirstName =
+			firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+		const cleanLastName =
+			lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
+
+		console.log(cleanFirstName);
+
 		const body = {
-			email,
-			password,
-			firstName,
-			lastName,
+			email: cleanEmail,
+			password: cleanPassword,
+			firstName: cleanFirstName,
+			lastName: cleanLastName,
 		};
 
 		const response = await fetch(config.api.signup.route, {
 			method: "POST",
 			body: JSON.stringify(body),
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+			},
 		});
 
 		const data = await response.json();
 
 		if (!data.success) {
-			setErrors(errors => [...errors, data.error]);
+			setError(data.error);
+			setLoading(false);
+			return;
 		}
 
-		if (data.success) {
-			const auth = getAuth();
-
-			await signInWithEmailAndPassword(auth, email, password);
-
-			router.push(config.router.account.path);
-		}
-
-		setLoading(false);
+		const auth = getAuth();
+		signInWithEmailAndPassword(auth, cleanEmail, cleanPassword)
+			.then(async () => {
+				await sleep(500);
+				router.push(config.router.account.path);
+			})
+			.catch(error => {
+				setError(errMsg(error.code));
+				setLoading(false);
+			});
 	};
 
 	return (
-		<div className="flex justify-center pt-16">
-			<div className="card w-[33%] bg-base-100 shadow-xl">
-				<div className="card-body">
-					<h2 className="card-title justify-center">Création de compte</h2>
-					{errors.length !== 0 && (
-						<div>
-							<div className="alert alert-error shadow-lg flex-col items-start">
-								{errors.map(error => (
-									<div key={error}>
-										<span className="text-sm">{error}</span>
-									</div>
-								))}
-							</div>
-						</div>
-					)}
-					<div className="form-control">
-						<div className="flex gap-2">
-							<div className="flex-grow">
+		<div className="flex flex-grow">
+			<div className="flex flex-col justify-center bg-base-100 shadow-xl z-30 px-20 w-1/3">
+				<div className="form-control">
+					<h2 className="text-3xl font-bold">Créer un compte</h2>
+					<div>
+						<div className="flex gap-4">
+							<div className="form-control">
 								<label className="label">
 									<span className="label-text">Prénom</span>
 								</label>
 								<input
-									onChange={e => setFirstName(e.target.value)}
 									type="text"
+									className="input input-bordered input-primary w-full"
 									placeholder="Prénom"
-									className={cn("input input-bordered w-full", {
-										"input-primary": !firstNameError,
-										"input-error": firstNameError,
-									})}
+									onChange={e =>
+										handleInputChange(setFirstName, e.target.value)
+									}
 								/>
 							</div>
 
-							<div className="flex-grow">
+							<div className="form-control">
 								<label className="label">
 									<span className="label-text">Nom</span>
 								</label>
 								<input
-									onChange={e => setLastName(e.target.value)}
 									type="text"
+									className="input input-bordered input-primary w-full"
 									placeholder="Nom"
-									className={cn("input input-bordered w-full", {
-										"input-primary": !lastNameError,
-										"input-error": lastNameError,
-									})}
+									onChange={e => handleInputChange(setLastName, e.target.value)}
 								/>
 							</div>
 						</div>
@@ -153,52 +167,62 @@ const SignUp = () => {
 							<span className="label-text">Adresse mail</span>
 						</label>
 						<input
-							onChange={e => setEmail(e.target.value)}
 							type="text"
+							className="input input-bordered input-primary w-full"
 							placeholder="Adresse mail"
-							className={cn("input input-bordered w-full", {
-								"input-primary": !emailError,
-								"input-error": emailError,
-							})}
+							onChange={e => handleInputChange(setEmail, e.target.value)}
 						/>
 
 						<label className="label">
 							<span className="label-text">Mot de passe</span>
 						</label>
 						<input
-							onChange={e => setPassword(e.target.value)}
 							type="password"
+							className="input input-bordered input-primary w-full"
 							placeholder="**********"
-							className={cn("input input-bordered w-full", {
-								"input-primary": !passwordError,
-								"input-error": passwordError,
-							})}
+							onChange={e => handleInputChange(setPassword, e.target.value)}
 						/>
 
 						<label className="label">
-							<span className="label-text">Confirmer votre mot de passe</span>
+							<span className="label-text">Confirmation du mot de passe</span>
 						</label>
 						<input
-							onChange={e => setPasswordConfirm(e.target.value)}
 							type="password"
+							className="input input-bordered input-primary w-full"
 							placeholder="**********"
-							className={cn("input input-bordered w-full", {
-								"input-primary": !passwordError,
-								"input-error": passwordError,
-							})}
+							onChange={e =>
+								handleInputChange(setPasswordConfirm, e.target.value)
+							}
 						/>
 					</div>
-					<div className="card-actions">
-						<button
-							onClick={() => handleSignUpClick()}
-							className={cn("btn btn-primary w-full", {
-								loading: loading,
-							})}
-						>
-							{!loading ? "S'enregistrer" : "Création de votre compte..."}
+					<button
+						onClick={() => handleSignUpClick()}
+						className={cn("btn mt-4", {
+							"btn-primary": !error,
+							"btn-warning": error,
+							loading: loading,
+						})}
+					>
+						{loading
+							? "Création de votre compte..."
+							: !error
+							? "S'enregistrer"
+							: error}
+					</button>
+					<div className="divider">OU</div>
+					<Link href={config.router.signin.path}>
+						<button className="btn btn-primary">
+							<a>Se connecter</a>
 						</button>
-					</div>
+					</Link>
 				</div>
+			</div>
+			<div className="flex justify-center items-center bg-base-100 flex-grow">
+				<Image
+					src="/img/logo.svg"
+					height={800}
+					width={800}
+				/>
 			</div>
 		</div>
 	);

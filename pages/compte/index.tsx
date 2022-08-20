@@ -5,11 +5,17 @@ import {
 	AuthAction,
 } from "next-firebase-auth";
 
+import SignOutButton from "components/account/SignOutButton";
+
 const Compte = () => {
 	const AuthUser = useAuthUser();
 	console.log(AuthUser);
 
-	return <div>Hello</div>;
+	return (
+		<div>
+			<SignOutButton />
+		</div>
+	);
 };
 
 export const getServerSideProps = withAuthUserTokenSSR({

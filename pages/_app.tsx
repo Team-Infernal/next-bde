@@ -15,13 +15,11 @@ initAuth();
 
 const BDECesiRouen = ({ Component, pageProps }: AppProps) => {
 	return (
-		<>
+		<div className="flex flex-col min-h-screen">
 			<Navbar />
-			<main>
-				<Component {...pageProps} />
-			</main>
+			<Component {...pageProps} />
 			<Footer />
-		</>
+		</div>
 	);
 };
 

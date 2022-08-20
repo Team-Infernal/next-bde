@@ -12,6 +12,13 @@ export const verifyEmail = (email: string) => {
 	};
 };
 
+export const passChars = {
+	lowercase: "abcdefghijklmnopqrstuvwxyz",
+	uppercase: "abcdefghijklmnopqrstuvwxyz".toUpperCase(),
+	numbers: "1234567890",
+	special: "!@#$%^&*",
+};
+
 export const verifyPassword = (password: string) => {
 	const passRegex =
 		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]$/;
