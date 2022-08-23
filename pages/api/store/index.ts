@@ -6,22 +6,25 @@ const database = getFirestore(db);
 
 const requiredParams = [
     'name',
-    'starting_date',
+    'price',
+    'remaining_stock',
+    'seller',
+    'image',
+    'location',
+    'shipping_date',
     'ending_date',
-    'description',
-    'organizer',
-    'location'
+    'roles_denied',
 ];
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { method, body } = req;
-        const eventsCollection: CollectionReference<DocumentData> = collection(database, 'events');
+        const productsCollection: CollectionReference<DocumentData> = collection(database, 'products');
         switch (method) {
             case 'GET':
-                const eventsSnapshot: QuerySnapshot<DocumentData> = await getDocs(eventsCollection);
-                const eventList = eventsSnapshot.docs.map(doc => [doc.id, doc.data()]);
-                res.status(200).json({ eventList });
+                const productsSnapshot: QuerySnapshot<DocumentData> = await getDocs(productsCollection);
+                const productList = productsSnapshot.docs.map(doc => [doc.id, doc.data()]);
+                res.status(200).json({ productList });
                 break;
             case 'POST':
                 let correctlyFilled = true;
@@ -31,10 +34,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 if(correctlyFilled) {
                     body.starting_date = parseInt(body.starting_date);
                     body.ending_date = parseInt(body.ending_date);
-                    await addDoc(collection(database, 'events'), body);
-                    res.status(201).json('event successfully added');
+                    await addDoc(collection(database, 'products'), body);
+                    res.status(201).json('product successfully added');
                 }
-                else res.status(400).json('There was an error while treating your request')
+                else res.status(400).json('Wrong params entered')
                 break;
             default:
                 res.status(400).json('An error occured');
