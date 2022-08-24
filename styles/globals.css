@@ -22,3 +22,91 @@ a {
 #__next {
 	min-height: 100vh;
 }
+
+/* .loader {
+	width: 45.8px;
+	height: 45.8px;
+	border-radius: 100% 0 100% 0;
+	background: #0da99d;
+	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	animation: loader-animation 1.6s infinite cubic-bezier(0.3, 1, 0, 1);
+} */
+
+.loader {
+	transform: scale(4);
+	position: relative;
+}
+
+.loader .stick {
+	width: 4rem;
+	height: 0.25rem;
+	background: #000000;
+	border-radius: 999px;
+	margin: 0.1rem 0;
+}
+
+.loader .leaf {
+	position: absolute;
+	width: 1rem;
+	height: 1rem;
+	background: #0da99d;
+}
+
+.loader .leaf.leaf-top {
+	top: -1rem;
+	right: -0.5rem;
+	border-radius: 100% 0 100% 0;
+	animation: leaf-animation-top 1s infinite cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.loader .leaf.leaf-bottom {
+	bottom: -1rem;
+	left: 0.5rem;
+	border-radius: 0 100% 0 100%;
+	animation: leaf-animation-bottom 1s infinite cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.loader .blocker {
+	position: absolute;
+	width: 1.5rem;
+	height: calc(1rem + 0.1rem + 0.25rem + 0.1rem + 1rem);
+	/* background: #ffffff; */
+	/* background: blue; */
+	top: -1rem;
+}
+
+.loader .blocker.blocker-left {
+	left: -1.5rem;
+}
+
+.loader .blocker.blocker-right {
+	right: -1.5rem;
+}
+
+@keyframes leaf-animation-top {
+	50% {
+		right: 50%;
+	}
+}
+
+@keyframes leaf-animation-bottom {
+	50% {
+		left: calc(100% - 1.5rem);
+	}
+}
+
+/* @keyframes loader-animation {
+	33% {
+		border-radius: 0;
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	}
+
+	50% {
+		border-radius: 0 100% 0 100%;
+	}
+
+	66% {
+		border-radius: 0;
+		clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+	}
+} */

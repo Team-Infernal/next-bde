@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { withAuthUser } from "next-firebase-auth";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -14,11 +15,15 @@ config.autoAddCss = false;
 initAuth();
 
 const BDECesiRouen = ({ Component, pageProps }: AppProps) => {
+	const { pathname } = useRouter();
+
+	const displayFooter = !["/auth/signin", "/auth/signup"].includes(pathname);
+
 	return (
 		<div className="flex flex-col min-h-screen">
 			<Navbar />
 			<Component {...pageProps} />
-			<Footer />
+			{displayFooter && <Footer />}
 		</div>
 	);
 };

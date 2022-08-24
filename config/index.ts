@@ -1,4 +1,4 @@
-const config = {
+const config: Config = {
 	router: {
 		home: {
 			name: "Accueil",
@@ -11,6 +11,10 @@ const config = {
 		events: {
 			name: "Événements",
 			path: "/evenements",
+		},
+		clubs: {
+			name: "Clubs",
+			path: "/clubs",
 		},
 		shop: {
 			name: "Boutique",
@@ -40,6 +44,17 @@ const config = {
 			route: "/api/auth/signout",
 		},
 	},
+	socials: [
+		{
+			name: "Instagram",
+			link: "https://instagram.com",
+		},
+		{
+			name: "Discord",
+			link: "https://discord.com",
+		},
+	],
+	partners: [],
 	pages: {
 		equipe: {
 			presidence: [
@@ -113,16 +128,6 @@ const config = {
 						role: "Responsable Pôle Communication",
 					},
 					{
-						firstName: "Samuel",
-						lastName: "WARD",
-						role: "Gestionnaire Site Web",
-					},
-					{
-						firstName: "Tristan",
-						lastName: "JEHANNO",
-						role: "Gestionnaire Site Web",
-					},
-					{
 						firstName: "Coline",
 						lastName: "COELHO",
 						role: "Membre Pôle Communication",
@@ -131,6 +136,16 @@ const config = {
 						firstName: "Nicolas",
 						lastName: "THIEULIN",
 						role: "Membre Pôle Communication",
+					},
+					{
+						firstName: "Samuel",
+						lastName: "WARD",
+						role: "Gestionnaire Site Web",
+					},
+					{
+						firstName: "Tristan",
+						lastName: "JEHANNO",
+						role: "Gestionnaire Site Web",
 					},
 				],
 			},
@@ -142,8 +157,60 @@ const navbar = [
 	config.router.home,
 	config.router.events,
 	config.router.team,
+	config.router.clubs,
 	config.router.shop,
 ];
+
+type Config = {
+	router: {
+		home: InternalPath;
+		team: InternalPath;
+		events: InternalPath;
+		clubs: InternalPath;
+		shop: InternalPath;
+		account: InternalPath;
+		signup: InternalPath;
+		signin: InternalPath;
+	};
+	api: {
+		signup: APIRoute;
+		signin: APIRoute;
+		signout: APIRoute;
+	};
+	socials: ExternalLink[];
+	partners: ExternalLink[];
+	pages: {
+		equipe: {
+			presidence: TeamMember[];
+			secretariat: TeamMember[];
+			poles: {
+				event: TeamMember[];
+				club: TeamMember[];
+				comm: TeamMember[];
+			};
+		};
+	};
+};
+
+type InternalPath = {
+	name: string;
+	path: string;
+};
+
+type APIRoute = {
+	route: string;
+};
+
+type ExternalLink = {
+	name: string;
+	link: string;
+};
+
+type TeamMember = {
+	firstName: string;
+	lastName: string;
+	role: string;
+};
 
 export default config;
 export { navbar };

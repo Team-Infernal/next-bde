@@ -12,7 +12,7 @@ const Navbar = () => {
 	const { firebaseUser } = AuthUser;
 
 	return (
-		<div className="navbar bg-base-100 px-10 shadow-md flex-initial z-50">
+		<nav className="navbar bg-base-100 px-10 shadow-md flex-initial z-50">
 			<div className="navbar-start">
 				<Link href="/">
 					<a>
@@ -43,7 +43,7 @@ const Navbar = () => {
 					<NavbarLogin />
 				)}
 			</div>
-		</div>
+		</nav>
 	);
 };
 
