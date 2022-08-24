@@ -20,6 +20,7 @@ const Navbar = () => {
 							src="/img/logo (transparent, no text).png"
 							width={100}
 							height={100}
+							alt="Logo du BDE CESI Rouen"
 						/>
 					</a>
 				</Link>

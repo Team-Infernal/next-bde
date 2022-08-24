@@ -10,6 +10,7 @@ const Footer = () => {
 					src="/img/logo (transparent).png"
 					width={100}
 					height={100}
+					alt="Logo du BDE CESI Rouen"
 				/>
 				<p className="font-semibold">BDE CESI Rouen</p>
 				<p>Copyright © 2022 - Tous droits réservés</p>
@@ -20,7 +21,7 @@ const Footer = () => {
 					<a className="link link-hover hover:text-primary">BDE CESI Rouen</a>
 				</Link>
 				<Link href={config.router.team.path}>
-					<a className="link link-hover hover:text-primary">L'équipe</a>
+					<a className="link link-hover hover:text-primary">L&apos;équipe</a>
 				</Link>
 				<Link href={config.router.events.path}>
 					<a className="link link-hover hover:text-primary">Les événements</a>

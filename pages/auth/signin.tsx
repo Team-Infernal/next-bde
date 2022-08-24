@@ -118,6 +118,7 @@ const SignIn = () => {
 					src="/img/logo.svg"
 					height={800}
 					width={800}
+					alt="Logo du BDE CESI Rouen"
 				/>
 			</div>
 		</div>

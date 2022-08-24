@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
 import CalendarDates from "calendar-dates";
+import { getMonth, getYear, fromUnixTime, formatISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 import CalendarToolbar from "components/calendar/CalendarToolbar";
 import CalendarDayHeader from "components/calendar/CalendarDayHeader";
 import CalendarDay from "components/calendar/CalendarDay";
-import CalendarRow from "components/calendar/CalendarRow";
-import { getMonth, getYear } from "date-fns";
 
 const calendarDates = new CalendarDates();
 
@@ -22,22 +21,36 @@ const days = [
 const Calendar = () => {
 	const now = new Date();
 
-	const [matrixes, setMatrixes] = useState<any[]>([]);
+	const [dates, setDates] = useState<any[]>([]);
 	const [currentMonth, setCurrentMonth] = useState({
 		month: getMonth(now),
 		year: getYear(now),
 	});
+	const [events, setEvents] = useState<EventResponse[]>([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		const getMatrixes = async () => {
+		const getDates = async () => {
 			const date = new Date(currentMonth.year, currentMonth.month, 1);
-			let matrixes = [];
-			for (const matrix of await calendarDates.getMatrix(date)) {
-				matrixes.push(matrix);
-			}
-			setMatrixes(matrixes);
+			const dates = await calendarDates.getDates(date);
+			setDates(dates);
 		};
-		getMatrixes();
+		getDates();
+
+		const getEvents = async () => {
+			setLoading(true);
+			fetch(
+				`/api/events/temp?year=${currentMonth.year}&month=${
+					currentMonth.month + 1
+				}`
+			)
+				.then(response => response.json())
+				.then(data => {
+					setEvents(data.data);
+					setLoading(false);
+				});
+		};
+		getEvents();
 	}, [currentMonth]);
 
 	const handlePreviousMonthClick = () => {
@@ -81,6 +94,15 @@ const Calendar = () => {
 		});
 	};
 
+	const getDayEvents = (searchDate: string) => {
+		const filteredEvents = events.filter(event => {
+			const date = fromUnixTime(event.timestamp);
+			const dateISO = formatISO(date, { representation: "date" });
+			return dateISO === searchDate;
+		});
+		return filteredEvents;
+	};
+
 	return (
 		<>
 			<CalendarToolbar
@@ -88,6 +110,7 @@ const Calendar = () => {
 				onPreviousClick={() => handlePreviousMonthClick()}
 				onNextClick={() => handleNextMonthClick()}
 				onNowClick={() => handleNowClick()}
+				loading={loading}
 			/>
 			<div className="shadow-lg rounded-lg p-4">
 				<div className="bg-base-200">
@@ -100,13 +123,15 @@ const Calendar = () => {
 							/>
 						))}
 					</div>
-					{matrixes.map((row, index) => (
-						<CalendarRow
-							key={`row-${index}`}
-							row={row}
-							last={index === matrixes.length - 1}
-						/>
-					))}
+					<div className="grid grid-cols-7">
+						{dates.map((date, index) => (
+							<CalendarDay
+								key={`day-${index}`}
+								day={date}
+								events={getDayEvents(`${date.iso}`)}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
 		</>

@@ -1,3 +1,5 @@
+import cn from "classnames";
+import { getMonth, getYear } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +11,7 @@ type Props = {
 	onPreviousClick: () => void;
 	onNextClick: () => void;
 	onNowClick: () => void;
+	loading: boolean;
 };
 
 const months = [
@@ -31,12 +34,17 @@ const CalendarToolbar = ({
 	onPreviousClick,
 	onNextClick,
 	onNowClick,
+	loading,
 }: Props) => {
+	const now = new Date();
+
 	return (
 		<div className="flex gap-8 shadow-lg rounded-lg mb-8 p-8">
 			<div className="btn-group">
 				<button
-					className="btn"
+					className={cn("btn", {
+						"btn-disabled": loading,
+					})}
 					onClick={() => onPreviousClick()}
 				>
 					<FontAwesomeIcon icon={faAngleLeft} />
@@ -45,7 +53,9 @@ const CalendarToolbar = ({
 					{months[current.month]} {current.year}
 				</button>
 				<button
-					className="btn"
+					className={cn("btn", {
+						"btn-disabled": loading,
+					})}
 					onClick={() => onNextClick()}
 				>
 					<FontAwesomeIcon icon={faAngleRight} />
@@ -53,10 +63,13 @@ const CalendarToolbar = ({
 			</div>
 			<div>
 				<button
-					className="btn"
+					className={cn("btn", {
+						"btn-primary":
+							current.month === getMonth(now) && current.year === getYear(now),
+					})}
 					onClick={() => onNowClick()}
 				>
-					Aujourd'hui
+					Aujourd&apos;hui
 				</button>
 			</div>
 		</div>

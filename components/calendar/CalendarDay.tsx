@@ -9,41 +9,16 @@ type Props = {
 		iso: string;
 		type: string;
 	};
-	last: boolean;
+	events: EventResponse[];
 };
 
-const events = [
-	{
-		iso: "2022-08-26",
-		name: "Bowling",
-	},
-	{
-		iso: "2022-08-26",
-		name: "Bowling",
-	},
-	{
-		iso: "2022-08-26",
-		name: "Bowling",
-	},
-	{
-		iso: "2022-08-26",
-		name: "Bowling",
-	},
-	{
-		iso: "2022-09-06",
-		name: "Hmmmm",
-	},
-];
-
-const CalendarDay = ({ day, last }: Props) => {
+const CalendarDay = ({ day, events }: Props) => {
 	const now = new Date();
 	const todayISO = formatISO(now, { representation: "date" });
 
 	return (
 		<div
-			className={cn("h-48 bg-base-100 p-4 m-[1px] mb-0 flex flex-col gap-4", {
-				"mr-0": !last,
-			})}
+			className={cn("h-48 bg-base-100 p-4 m-[1px] mb-0 flex flex-col gap-4")}
 		>
 			<div
 				className={cn("font-semibold", {
@@ -53,15 +28,14 @@ const CalendarDay = ({ day, last }: Props) => {
 			>
 				{day.date}
 			</div>
-			<div className="overflow-y-auto flex flex-col gap-2 pr-2">
-				{events
-					.filter(event => event.iso === day.iso)
-					.map((event, index) => (
-						<Event
-							key={`${event.iso}-${index}`}
-							event={event}
-						/>
-					))}
+			<div className="overflow-y-auto flex flex-col gap-2">
+				{events.map((event, index) => (
+					<Event
+						key={`${event.yearMonth}-${index}`}
+						event={event}
+						modalId={`${event.yearMonth}-${index}`}
+					/>
+				))}
 			</div>
 		</div>
 	);
