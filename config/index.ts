@@ -20,6 +20,10 @@ const config: Config = {
 			name: "Boutique",
 			path: "/boutique",
 		},
+		cart: {
+			name: "Panier",
+			path: "/boutique/panier",
+		},
 		account: {
 			name: "Compte",
 			path: "/compte",
@@ -47,11 +51,7 @@ const config: Config = {
 	socials: [
 		{
 			name: "Instagram",
-			link: "https://instagram.com",
-		},
-		{
-			name: "Discord",
-			link: "https://discord.com",
+			link: "https://instagram.com/bde_cesi_rouen",
 		},
 	],
 	partners: [],
@@ -168,6 +168,7 @@ type Config = {
 		events: InternalPath;
 		clubs: InternalPath;
 		shop: InternalPath;
+		cart: InternalPath;
 		account: InternalPath;
 		signup: InternalPath;
 		signin: InternalPath;

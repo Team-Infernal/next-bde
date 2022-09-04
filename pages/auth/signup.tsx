@@ -92,8 +92,6 @@ const SignUp = () => {
 		const cleanLastName =
 			lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
 
-		console.log(cleanFirstName);
-
 		const body = {
 			email: cleanEmail,
 			password: cleanPassword,

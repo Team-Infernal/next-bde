@@ -5,6 +5,9 @@ import {
 	sendEmailVerification,
 	updateProfile,
 } from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+
+import db from "lib/initApp";
 
 import {
 	verifyEmail,
@@ -12,6 +15,8 @@ import {
 	verifyName,
 } from "utils/formVerification";
 import errMsg from "utils/firebaseErrors";
+
+const firestore = getFirestore(db);
 
 const handler: NextApiHandler = async (req, res) => {
 	if (req.method !== "POST") {
@@ -53,6 +58,11 @@ const handler: NextApiHandler = async (req, res) => {
 
 		await updateProfile(user, { displayName: `${firstName}_${lastName}` });
 		sendEmailVerification(user);
+
+		// créer un panier pour la boutique
+		setDoc(doc(firestore, "shopCarts", user.uid), {
+			items: [],
+		});
 
 		return res.status(200).json({
 			success: true,

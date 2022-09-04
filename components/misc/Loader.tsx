@@ -1,7 +1,14 @@
-const Loading = () => {
+type Props = {
+	scale: number;
+};
+
+const Loader = ({ scale = 1 }: Props) => {
 	return (
 		<div className="flex justify-center items-center h-screen">
-			<div className="loader">
+			<div
+				className="branch-loader"
+				style={{ transform: `scale(${scale})` }}
+			>
 				<div className="stick"></div>
 				<div className="leaf leaf-top leaf-top-left"></div>
 				<div className="leaf leaf-top leaf-top-right"></div>
@@ -12,4 +19,4 @@ const Loading = () => {
 	);
 };
 
-export default Loading;
+export default Loader;

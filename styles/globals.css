@@ -23,21 +23,11 @@ a {
 	min-height: 100vh;
 }
 
-/* .loader {
-	width: 45.8px;
-	height: 45.8px;
-	border-radius: 100% 0 100% 0;
-	background: #0da99d;
-	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-	animation: loader-animation 1.6s infinite cubic-bezier(0.3, 1, 0, 1);
-} */
-
-.loader {
-	transform: scale(4);
+.branch-loader {
 	position: relative;
 }
 
-.loader .stick {
+.branch-loader .stick {
 	width: 4rem;
 	height: 0.25rem;
 	background: #000000;
@@ -45,68 +35,100 @@ a {
 	margin: 0.1rem 0;
 }
 
-.loader .leaf {
+.branch-loader .leaf {
 	position: absolute;
 	width: 1rem;
 	height: 1rem;
 	background: #0da99d;
 }
 
-.loader .leaf.leaf-top {
+.branch-loader .leaf.leaf-top {
 	top: -1rem;
+}
+
+.branch-loader .leaf.leaf-top-left {
+	left: -0.5rem;
+	border-radius: 0 100% 0 100%;
+	animation: leaf-animation-top-left 1s infinite cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.branch-loader .leaf.leaf-top-right {
 	right: -0.5rem;
 	border-radius: 100% 0 100% 0;
-	animation: leaf-animation-top 1s infinite cubic-bezier(0.5, 0, 0.5, 1);
+	animation: leaf-animation-top-right 1s infinite cubic-bezier(0.5, 0, 0.5, 1)
+		100ms;
 }
 
-.loader .leaf.leaf-bottom {
+.branch-loader .leaf.leaf-bottom {
 	bottom: -1rem;
-	left: 0.5rem;
+}
+
+.branch-loader .leaf.leaf-bottom-left {
+	left: -0.5rem;
+	border-radius: 100% 0 100% 0;
+	animation: leaf-animation-bottom-left 1s infinite cubic-bezier(0.5, 0, 0.5, 1)
+		200ms;
+}
+
+.branch-loader .leaf.leaf-bottom-right {
+	right: -0.5rem;
 	border-radius: 0 100% 0 100%;
-	animation: leaf-animation-bottom 1s infinite cubic-bezier(0.5, 0, 0.5, 1);
+	animation: leaf-animation-bottom-right 1s infinite
+		cubic-bezier(0.5, 0, 0.5, 1) 300ms;
 }
 
-.loader .blocker {
-	position: absolute;
-	width: 1.5rem;
-	height: calc(1rem + 0.1rem + 0.25rem + 0.1rem + 1rem);
-	/* background: #ffffff; */
-	/* background: blue; */
-	top: -1rem;
-}
+@keyframes leaf-animation-top-left {
+	20% {
+		left: calc(50% - 1rem - 0.05rem);
+	}
 
-.loader .blocker.blocker-left {
-	left: -1.5rem;
-}
+	40% {
+		left: calc(50% - 1rem - 0.05rem);
+	}
 
-.loader .blocker.blocker-right {
-	right: -1.5rem;
-}
-
-@keyframes leaf-animation-top {
-	50% {
-		right: 50%;
+	60% {
+		left: -0.5rem;
 	}
 }
 
-@keyframes leaf-animation-bottom {
-	50% {
-		left: calc(100% - 1.5rem);
+@keyframes leaf-animation-top-right {
+	20% {
+		right: calc(50% - 1rem - 0.05rem);
+	}
+
+	40% {
+		right: calc(50% - 1rem - 0.05rem);
+	}
+
+	60% {
+		right: -0.5rem;
 	}
 }
 
-/* @keyframes loader-animation {
-	33% {
-		border-radius: 0;
-		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+@keyframes leaf-animation-bottom-left {
+	20% {
+		left: calc(50% - 1rem - 0.05rem);
 	}
 
-	50% {
-		border-radius: 0 100% 0 100%;
+	40% {
+		left: calc(50% - 1rem - 0.05rem);
 	}
 
-	66% {
-		border-radius: 0;
-		clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+	60% {
+		left: -0.5rem;
 	}
-} */
+}
+
+@keyframes leaf-animation-bottom-right {
+	20% {
+		right: calc(50% - 1rem - 0.05rem);
+	}
+
+	40% {
+		right: calc(50% - 1rem - 0.05rem);
+	}
+
+	60% {
+		right: -0.5rem;
+	}
+}

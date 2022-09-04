@@ -8,7 +8,7 @@ const nextConfig = {
 		},
 	},
 	images: {
-		domains: ["www.gravatar.com"],
+		domains: ["www.gravatar.com", "placeimg.com"],
 	},
 };
 

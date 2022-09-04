@@ -1,4 +1,5 @@
 import EventModal from "components/calendar/EventModal";
+import React from "react";
 
 type Props = {
 	event: EventResponse;
@@ -11,6 +12,7 @@ const Event = ({ event, modalId }: Props) => {
 			<label
 				htmlFor={modalId}
 				className="btn btn-primary modal-button"
+				onClick={event => event.stopPropagation()}
 			>
 				{event.name}
 			</label>

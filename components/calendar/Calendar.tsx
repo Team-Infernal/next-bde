@@ -6,6 +6,8 @@ import CalendarToolbar from "components/calendar/CalendarToolbar";
 import CalendarDayHeader from "components/calendar/CalendarDayHeader";
 import CalendarDay from "components/calendar/CalendarDay";
 
+import { EventResponse } from "types";
+
 const calendarDates = new CalendarDates();
 
 const days = [
@@ -114,7 +116,7 @@ const Calendar = () => {
 			/>
 			<div className="shadow-lg rounded-lg p-4">
 				<div className="bg-base-200">
-					<div className="grid grid-cols-7">
+					<div className="grid grid-cols-7 gap-[1px] border-[1px] border-base-200">
 						{days.map((day, index) => (
 							<CalendarDayHeader
 								key={day}
@@ -122,8 +124,6 @@ const Calendar = () => {
 								lastHeader={index === days.length - 1}
 							/>
 						))}
-					</div>
-					<div className="grid grid-cols-7">
 						{dates.map((date, index) => (
 							<CalendarDay
 								key={`day-${index}`}

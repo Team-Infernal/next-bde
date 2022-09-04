@@ -3,6 +3,8 @@ import { formatISO } from "date-fns";
 
 import Event from "components/calendar/Event";
 
+import { EventResponse } from "types";
+
 type Props = {
 	day: {
 		date: number;
@@ -14,19 +16,21 @@ type Props = {
 
 const CalendarDay = ({ day, events }: Props) => {
 	const now = new Date();
-	const todayISO = formatISO(now, { representation: "date" });
+	const isToday = day.iso === formatISO(now, { representation: "date" });
 
 	return (
-		<div
-			className={cn("h-48 bg-base-100 p-4 m-[1px] mb-0 flex flex-col gap-4")}
-		>
+		<div className="h-48 bg-base-100 p-4 flex flex-col gap-4">
 			<div
 				className={cn("font-semibold", {
 					"text-base-300": day.type !== "current",
-					"text-primary": day.iso === todayISO,
+					"text-primary": isToday,
 				})}
 			>
-				{day.date}
+				{!isToday ? (
+					day.date
+				) : (
+					<div className="badge badge-primary badge-lg">{day.date}</div>
+				)}
 			</div>
 			<div className="overflow-y-auto flex flex-col gap-2">
 				{events.map((event, index) => (
