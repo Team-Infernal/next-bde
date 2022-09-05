@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useAuthUser } from "next-firebase-auth";
+import { useAuthUser, withAuthUser } from "next-firebase-auth";
 import { useEffect, useReducer } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -11,8 +11,6 @@ import Loader from "components/misc/Loader";
 import config from "config";
 
 import { cartReducer, INITIAL_STATE } from "reducers/cartReducer";
-
-import sleep from "utils/sleep";
 
 const stripePromise = loadStripe(
 	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -40,10 +38,6 @@ const Panier = () => {
 				})
 			)
 			.then(response => response.json())
-			.then(async data => {
-				// await sleep(1000);
-				return data;
-			})
 			.then(data => {
 				console.log(data);
 				if (!isCanceled && data.success) {

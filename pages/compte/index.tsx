@@ -6,13 +6,17 @@ import {
 } from "next-firebase-auth";
 
 import SignOutButton from "components/account/SignOutButton";
+import Loader from "components/misc/Loader";
 
 const Compte = () => {
 	const AuthUser = useAuthUser();
-	console.log(AuthUser);
+
+	if (!AuthUser.firebaseUser) {
+		return <Loader scale={3} />;
+	}
 
 	return (
-		<div>
+		<div className="flex-grow p-16">
 			<SignOutButton />
 		</div>
 	);
@@ -20,7 +24,7 @@ const Compte = () => {
 
 export const getServerSideProps = withAuthUserTokenSSR({
 	whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async (/*{ AuthUser, req }*/) => {
+})(async () => {
 	return {
 		props: {},
 	};
