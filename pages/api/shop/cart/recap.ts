@@ -42,6 +42,7 @@ const handler: NextApiHandler = async (req, res) => {
 					quantity: item.quantity,
 					size: item.size,
 					item: {
+						id: item.id,
 						category: data.category,
 						description: data.description,
 						name: data.name,

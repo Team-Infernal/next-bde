@@ -2,6 +2,8 @@ import { getDay, getMonth, fromUnixTime, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+import { EventResponse } from "types";
+
 type Props = {
 	event: EventResponse;
 	id: string;

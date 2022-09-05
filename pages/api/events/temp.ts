@@ -10,6 +10,8 @@ import { NextApiHandler } from "next";
 
 import db from "lib/initApp";
 
+import { EventResponse } from "types";
+
 const database = getFirestore(db);
 
 const handler: NextApiHandler = async (req, res) => {

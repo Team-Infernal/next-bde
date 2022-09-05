@@ -1,6 +1,8 @@
 import EventModal from "components/calendar/EventModal";
 import React from "react";
 
+import { EventResponse } from "types";
+
 type Props = {
 	event: EventResponse;
 	modalId: string;
