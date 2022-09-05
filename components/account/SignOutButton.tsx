@@ -19,12 +19,14 @@ const SignOutButton = () => {
 	};
 
 	return (
-		<button
-			onClick={() => handleSignOut()}
-			className="btn btn-primary"
-		>
-			{!loading ? "Se déconnecter" : "Déconnexion..."}
-		</button>
+		<div className="w-fit self-center mt-auto">
+			<button
+				onClick={() => handleSignOut()}
+				className="btn btn-primary"
+			>
+				{!loading ? "Se déconnecter" : "Déconnexion..."}
+			</button>
+		</div>
 	);
 };
 

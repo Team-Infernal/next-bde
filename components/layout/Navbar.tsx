@@ -40,9 +40,9 @@ const Navbar = () => {
 
 			<div className="navbar-end">
 				{firebaseUser ? (
-					<div className="flex gap-2 items-center">
-						<NavbarAvatar email={firebaseUser.email} />
+					<div className="flex gap-4 items-center">
 						<NavbarBasket />
+						<NavbarAvatar email={firebaseUser.email} />
 					</div>
 				) : (
 					<NavbarLogin />

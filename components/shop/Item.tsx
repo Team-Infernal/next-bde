@@ -12,6 +12,8 @@ import { INITIAL_STATE, shopItemReducer } from "reducers/shopItemReducer";
 import { ShopItem } from "types";
 
 import sleep from "utils/sleep";
+import Link from "next/link";
+import config from "config";
 
 type Props = {
 	item: ShopItem;
@@ -80,7 +82,15 @@ const Item = ({ item }: Props) => {
 						quantity={state.quantity}
 						dispatch={dispatch}
 					/>
-					{state.selectedSize.available ? (
+					{!AuthUser.id ? (
+						<Link href={config.router.signin.path}>
+							<a className="flex-grow">
+								<button className="btn btn-ghost w-full">
+									Veuillez vous connecter
+								</button>
+							</a>
+						</Link>
+					) : state.selectedSize.available ? (
 						<button
 							className={cn("btn btn-primary flex-grow", {
 								loading: state.loading,

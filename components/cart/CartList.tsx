@@ -1,4 +1,4 @@
-import CartListItem from "components/shop/CartListItem";
+import CartListItem from "components/cart/CartListItem";
 
 import { CartFinalItem } from "types";
 

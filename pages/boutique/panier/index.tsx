@@ -1,10 +1,15 @@
 import Link from "next/link";
-import { useAuthUser, withAuthUser } from "next-firebase-auth";
+import {
+	AuthAction,
+	useAuthUser,
+	withAuthUser,
+	withAuthUserTokenSSR,
+} from "next-firebase-auth";
 import { useEffect, useReducer } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
-import CartList from "components/shop/CartList";
-import CartSidebar from "components/shop/CartSidebar";
+import CartList from "components/cart/CartList";
+import CartSidebar from "components/cart/CartSidebar";
 import Error from "components/misc/Error";
 import Loader from "components/misc/Loader";
 
@@ -97,4 +102,14 @@ const Panier = () => {
 	);
 };
 
-export default Panier;
+export const getServerSideProps = withAuthUserTokenSSR({
+	whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})(async () => {
+	return {
+		props: {},
+	};
+});
+
+export default withAuthUser({
+	whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Panier);

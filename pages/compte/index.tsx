@@ -5,6 +5,8 @@ import {
 	AuthAction,
 } from "next-firebase-auth";
 
+import Header from "components/account/Header";
+import Account from "components/account/Account";
 import SignOutButton from "components/account/SignOutButton";
 import Loader from "components/misc/Loader";
 
@@ -16,7 +18,9 @@ const Compte = () => {
 	}
 
 	return (
-		<div className="flex-grow p-16">
+		<div className="flex-grow flex flex-col gap-16 px-48 py-16">
+			<Header />
+			<Account user={AuthUser} />
 			<SignOutButton />
 		</div>
 	);

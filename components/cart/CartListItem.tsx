@@ -1,6 +1,6 @@
 import Image from "next/future/image";
 
-import CartItemPrice from "components/shop/CartItemPrice";
+import CartItemPrice from "components/cart/CartItemPrice";
 
 import { CartFinalItem } from "types";
 
@@ -21,6 +21,7 @@ const CartListItem = ({ item }: Props) => {
 					width={150}
 					height={150}
 					className="rounded-lg"
+					alt={item.item.name}
 				/>
 				<div className="flex flex-col justify-between">
 					<div>

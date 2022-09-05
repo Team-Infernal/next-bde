@@ -1,16 +1,29 @@
 import Link from "next/link";
+import { useAuthUser } from "next-firebase-auth";
 
 import config from "config";
 
 const Header = () => {
+	const AuthUser = useAuthUser();
+
 	return (
 		<div className="flex justify-between items-center">
 			<h1 className="text-3xl font-semibold">Boutique</h1>
-			<Link href={config.router.cart.path}>
-				<a>
-					<button className="btn btn-primary">Mon panier</button>
-				</a>
-			</Link>
+			{AuthUser.id ? (
+				<Link href={config.router.cart.path}>
+					<a>
+						<button className="btn btn-primary">Mon panier</button>
+					</a>
+				</Link>
+			) : (
+				<Link href={config.router.signin.path}>
+					<a>
+						<button className="btn btn-ghost">
+							Connectez-vous pour accéder à votre panier
+						</button>
+					</a>
+				</Link>
+			)}
 		</div>
 	);
 };
