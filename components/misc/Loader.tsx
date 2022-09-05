@@ -4,7 +4,7 @@ type Props = {
 
 const Loader = ({ scale = 1 }: Props) => {
 	return (
-		<div className="flex justify-center items-center h-screen">
+		<div className="flex-grow flex justify-center items-center">
 			<div
 				className="branch-loader"
 				style={{ transform: `scale(${scale})` }}

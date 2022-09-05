@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAuthUser } from "next-firebase-auth";
 
 import NavbarAvatar from "components/layout/NavbarAvatar";
+import NavbarBasket from "components/layout/NavbarBasket";
 import NavbarLogin from "components/layout/NavbarLogin";
 
 import { navbar } from "config";
@@ -39,7 +40,10 @@ const Navbar = () => {
 
 			<div className="navbar-end">
 				{firebaseUser ? (
-					<NavbarAvatar email={firebaseUser.email} />
+					<div className="flex gap-2 items-center">
+						<NavbarAvatar email={firebaseUser.email} />
+						<NavbarBasket />
+					</div>
 				) : (
 					<NavbarLogin />
 				)}

@@ -41,17 +41,22 @@ const Panier = () => {
 			)
 			.then(response => response.json())
 			.then(async data => {
-				await sleep(2000);
+				// await sleep(1000);
 				return data;
 			})
 			.then(data => {
-				if (!isCanceled) {
+				console.log(data);
+				if (!isCanceled && data.success) {
 					dispatch({
 						type: "FETCH_SUCCESS",
 						payload: {
 							cart: data.items,
 							total: data.total,
 						},
+					});
+				} else {
+					dispatch({
+						type: "FETCH_ERROR",
 					});
 				}
 			})
@@ -64,7 +69,7 @@ const Panier = () => {
 		return () => {
 			isCanceled = true;
 		};
-	}, [AuthUser.id]);
+	}, [AuthUser, AuthUser.id]);
 
 	if (state.loading) {
 		return <Loader scale={3} />;

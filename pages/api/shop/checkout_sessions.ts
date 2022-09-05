@@ -17,8 +17,6 @@ const handler: NextApiHandler = async (req, res) => {
 	if (req.method === "POST") {
 		try {
 			const AuthUser = await verifyIdToken(req.headers.authorization as string);
-			const token = await AuthUser.getIdToken();
-			console.log(token);
 
 			const cartRef = doc(firestore, "shopCarts", AuthUser.id as string);
 			const cartSnap = await getDoc(cartRef);
@@ -31,7 +29,6 @@ const handler: NextApiHandler = async (req, res) => {
 			}
 
 			const items = cartSnap.data().items as CartItem[];
-			let total = 0;
 			let cartItems: CartFinalItem[] = [];
 
 			for (const item of items) {
@@ -50,6 +47,7 @@ const handler: NextApiHandler = async (req, res) => {
 					quantity: item.quantity,
 					size: item.size,
 					item: {
+						id: item.id,
 						category: data.category,
 						description: data.description,
 						name: data.name,
@@ -59,21 +57,32 @@ const handler: NextApiHandler = async (req, res) => {
 						images: data.images,
 					},
 				});
-				total +=
-					data.promo !== null
-						? data.promo * item.quantity
-						: data.price * item.quantity;
 			}
 
-			console.log(cartItems);
+			let line_items = [];
+
+			for (const item of cartItems) {
+				const price = parseInt(
+					((item.item.promo || item.item.price) * 100).toFixed(2)
+				);
+
+				line_items.push({
+					price_data: {
+						currency: "EUR",
+						product_data: {
+							name: `${item.item.name}${
+								item.size && ` - ${item.size.toUpperCase()}`
+							}`,
+							images: item.item.images.slice(0, 7),
+						},
+						unit_amount: price,
+					},
+					quantity: item.quantity,
+				});
+			}
 
 			const session = await stripe.checkout.sessions.create({
-				line_items: [
-					{
-						price: "price_1LczQCGGrI70u7SM6AeOlkHS",
-						quantity: 1,
-					},
-				],
+				line_items,
 				customer_email: AuthUser.email ?? undefined,
 				mode: "payment",
 				billing_address_collection: "required",
@@ -91,7 +100,6 @@ const handler: NextApiHandler = async (req, res) => {
 			return res.status(200).json({
 				payment_url: session.url as string,
 			});
-			// res.redirect(303, session.url as string);
 		} catch (err: any) {
 			return res.status(err.statusCode || 500).json(err.message);
 		}
