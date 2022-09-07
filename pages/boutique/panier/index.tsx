@@ -5,7 +5,7 @@ import {
 	withAuthUser,
 	withAuthUserTokenSSR,
 } from "next-firebase-auth";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
 import CartList from "components/cart/CartList";
@@ -15,7 +15,7 @@ import Loader from "components/misc/Loader";
 
 import config from "config";
 
-import { cartReducer, INITIAL_STATE } from "reducers/cartReducer";
+import { cartReducer, INITIAL_STATE, ACTIONS } from "reducers/cartReducer";
 
 const stripePromise = loadStripe(
 	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -44,24 +44,24 @@ const Panier = () => {
 			)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
 				if (!isCanceled && data.success) {
+					isCanceled = true;
 					dispatch({
-						type: "FETCH_SUCCESS",
+						type: ACTIONS.FETCH_SUCCESS,
 						payload: {
 							cart: data.items,
 							total: data.total,
 						},
 					});
-				} else {
+				} else if (!data.success) {
 					dispatch({
-						type: "FETCH_ERROR",
+						type: ACTIONS.FETCH_ERROR,
 					});
 				}
 			})
 			.catch(err => {
 				dispatch({
-					type: "FETCH_ERROR",
+					type: ACTIONS.FETCH_ERROR,
 				});
 			});
 
@@ -81,7 +81,7 @@ const Panier = () => {
 	}
 
 	return (
-		<div className="flex-grow grid grid-cols-3 gap-16 py-16 px-48">
+		<div className="flex-grow flex flex-col gap-16 py-16 px-48 animate-fade-in-up">
 			{AuthUser.email && (
 				<>
 					<div className="col-span-3">
@@ -90,12 +90,13 @@ const Panier = () => {
 							<a className="link link-hover">Retour à la boutique</a>
 						</Link>
 					</div>
-
-					<CartList
-						className="col-span-2"
-						cart={state.cart}
-					/>
-					<CartSidebar total={state.total} />
+					<div className="grid grid-cols-3 gap-16">
+						<CartList
+							cart={state.cart}
+							dispatch={dispatch}
+						/>
+						<CartSidebar total={state.total} />
+					</div>
 				</>
 			)}
 		</div>

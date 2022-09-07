@@ -7,7 +7,11 @@ import ItemSizes from "components/shop/ItemSizes";
 import ItemQuantity from "components/shop/ItemQuantity";
 import ItemImages from "components/shop/ItemImages";
 
-import { INITIAL_STATE, shopItemReducer } from "reducers/shopItemReducer";
+import {
+	shopItemReducer,
+	INITIAL_STATE,
+	ACTIONS,
+} from "reducers/shopItemReducer";
 
 import { ShopItem } from "types";
 
@@ -25,7 +29,7 @@ const Item = ({ item }: Props) => {
 	const [state, dispatch] = useReducer(shopItemReducer, INITIAL_STATE);
 
 	const handleAddToCartClick = async () => {
-		dispatch({ type: "ADD_CART_LOADING" });
+		dispatch({ type: ACTIONS.ADD_CART_LOADING });
 
 		AuthUser.getIdToken()
 			.then(token =>
@@ -44,17 +48,17 @@ const Item = ({ item }: Props) => {
 			.then(response => response.json())
 			.then(async data => {
 				if (data.success) {
-					dispatch({ type: "ADD_CART_SUCCESS" });
+					dispatch({ type: ACTIONS.ADD_CART_SUCCESS });
 					await sleep(2000);
-					dispatch({ type: "RESET_BUTTON" });
+					dispatch({ type: ACTIONS.RESET_BUTTON });
 				} else {
 					throw new Error();
 				}
 			})
 			.catch(async err => {
-				dispatch({ type: "ADD_CART_ERROR" });
+				dispatch({ type: ACTIONS.ADD_CART_ERROR });
 				await sleep(2000);
-				dispatch({ type: "RESET_BUTTON" });
+				dispatch({ type: ACTIONS.RESET_BUTTON });
 			});
 	};
 

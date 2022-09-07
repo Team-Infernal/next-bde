@@ -22,6 +22,15 @@ const INITIAL_STATE: State = {
 	errorAddedToCart: false,
 };
 
+const ACTIONS = {
+	CHANGE_SIZE: "CHANGE_SIZE",
+	CHANGE_QUANTITY: "CHANGE_QUANTITY",
+	ADD_CART_LOADING: "ADD_CART_LOADING",
+	ADD_CART_SUCCESS: "ADD_CART_SUCCESS",
+	ADD_CART_ERROR: "ADD_CART_ERROR",
+	RESET_BUTTON: "RESET_BUTTON",
+};
+
 const shopItemReducer = (state: State, action: Action): State => {
 	switch (action.type) {
 		case "CHANGE_SIZE":
@@ -65,4 +74,4 @@ const shopItemReducer = (state: State, action: Action): State => {
 	}
 };
 
-export { shopItemReducer, INITIAL_STATE };
+export { shopItemReducer, INITIAL_STATE, ACTIONS };

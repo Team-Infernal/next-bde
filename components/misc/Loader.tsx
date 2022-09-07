@@ -1,8 +1,8 @@
 type Props = {
-	scale: number;
+	scale?: number;
 };
 
-const Loader = ({ scale = 1 }: Props) => {
+const Loader = ({ scale = 3 }: Props) => {
 	return (
 		<div className="flex-grow flex justify-center items-center">
 			<div

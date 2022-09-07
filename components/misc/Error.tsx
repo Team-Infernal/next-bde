@@ -4,7 +4,7 @@ type Props = {
 
 const Error = ({ message }: Props) => {
 	return (
-		<div className="flex-grow flex justify-center items-center">
+		<div className="flex-grow flex justify-center items-center animate-fade-in-up">
 			<h2 className="text-xl">{message}</h2>
 		</div>
 	);

@@ -1,16 +1,51 @@
+import cn from "classnames";
 import Image from "next/future/image";
+import { useAuthUser } from "next-firebase-auth";
+import { useState } from "react";
 
 import CartItemPrice from "components/cart/CartItemPrice";
 
-import { CartFinalItem } from "types";
+import { ACTIONS } from "reducers/cartReducer";
+
+import { Action, CartFinalItem } from "types";
 
 type Props = {
 	item: CartFinalItem;
+	dispatch: React.Dispatch<Action>;
 };
 
-const CartListItem = ({ item }: Props) => {
+const CartListItem = ({ item, dispatch }: Props) => {
+	const AuthUser = useAuthUser();
+
+	const [loading, setLoading] = useState(false); // reducer
+
 	const handleDeleteClick = () => {
-		console.log(item);
+		if (!AuthUser.id || loading) {
+			return;
+		}
+
+		setLoading(true);
+
+		AuthUser.getIdToken()
+			.then(token =>
+				fetch("/api/shop/cart", {
+					method: "DELETE",
+					body: JSON.stringify({
+						id: item.id,
+						size: item.size,
+					}),
+					headers: {
+						Authorization: token as string,
+					},
+				})
+			)
+			.then(response => response.json())
+			.then(data => {
+				setLoading(false);
+				if (data.success) {
+					dispatch({ type: ACTIONS.DELETE_ITEM, payload: item });
+				}
+			});
 	};
 
 	return (
@@ -35,7 +70,9 @@ const CartListItem = ({ item }: Props) => {
 						Quantité: <span className="font-semibold">{item.quantity}</span>
 					</div>
 					<div
-						className="link link-hover text-sm opacity-75"
+						className={cn("btn btn-ghost btn-sm opacity-75", {
+							loading: loading,
+						})}
 						onClick={() => handleDeleteClick()}
 					>
 						Supprimer

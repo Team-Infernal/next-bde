@@ -32,7 +32,7 @@ type CartItem = {
 	id: string;
 	ref: DocumentReference;
 	quantity: number;
-	size: string;
+	size?: string;
 };
 
 type CartFinalItem = {

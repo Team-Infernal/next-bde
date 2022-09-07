@@ -27,7 +27,6 @@ const CartSidebar = ({ total }: Props) => {
 			)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
 				router.push(data.payment_url);
 			});
 	};
@@ -38,7 +37,7 @@ const CartSidebar = ({ total }: Props) => {
 				<h2 className="card-title">
 					{total !== null && (
 						<>
-							Total: {total}€{" "}
+							Total: {total.toFixed(2)}€{" "}
 							<span className="text-sm text-base-content">TVA incluse</span>
 						</>
 					)}

@@ -1,18 +1,21 @@
 import CartListItem from "components/cart/CartListItem";
 
-import { CartFinalItem } from "types";
+import { Action, CartFinalItem } from "types";
 
 type Props = {
-	className: string;
 	cart: CartFinalItem[];
+	dispatch: React.Dispatch<Action>;
 };
 
-const CartList = ({ className, cart }: Props) => {
+const CartList = ({ cart, dispatch }: Props) => {
 	return (
-		<div className={`${className}`}>
+		<div className="col-span-2 flex flex-col">
 			{cart.map((item, index) => (
 				<div key={`item-${index}`}>
-					<CartListItem item={item} />
+					<CartListItem
+						item={item}
+						dispatch={dispatch}
+					/>
 					{index !== cart.length - 1 && <div className="divider"></div>}
 				</div>
 			))}
