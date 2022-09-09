@@ -17,7 +17,7 @@ import { ShopItem } from "types";
 
 import sleep from "utils/sleep";
 import Link from "next/link";
-import config from "config";
+import { router } from "config";
 
 type Props = {
 	item: ShopItem;
@@ -87,7 +87,7 @@ const Item = ({ item }: Props) => {
 						dispatch={dispatch}
 					/>
 					{!AuthUser.id ? (
-						<Link href={config.router.signin.path}>
+						<Link href={router.signin.path}>
 							<a className="flex-grow">
 								<button className="btn btn-ghost w-full">
 									Veuillez vous connecter

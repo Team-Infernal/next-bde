@@ -12,7 +12,7 @@ import { verifyIdToken } from "next-firebase-auth";
 
 import db from "lib/initApp";
 
-import { CartItem } from "types";
+import { CartFinalItem, CartItem, ShopItem } from "types";
 
 type DeleteRequestBody = {
 	id: string;
@@ -29,15 +29,48 @@ const handler: NextApiHandler = async (req, res) => {
 			const cartSnap = await getDoc(cartRef);
 
 			if (!cartSnap.exists()) {
-				return res.status(404).json({
-					success: false,
-					message: "Panier introuvable.",
+				throw new Error("Panier introuvable.");
+			}
+
+			const cartItems: CartItem[] = cartSnap.data().items;
+
+			let items = [];
+			let total = 0;
+
+			for (const item of cartItems) {
+				const itemSnap = await getDoc(item.ref);
+
+				if (!itemSnap.exists()) {
+					throw new Error("Article introuvable");
+				}
+
+				const shopItem = itemSnap.data() as ShopItem;
+				const currentPrice = parseFloat(
+					((shopItem.promo || shopItem.price) * item.quantity).toFixed(2)
+				);
+
+				items.push({
+					id: item.id,
+					quantity: item.quantity,
+					size: item.size,
+					item: {
+						id: item.id,
+						category: shopItem.category,
+						description: shopItem.description,
+						name: shopItem.name,
+						price: shopItem.price,
+						promo: shopItem.promo,
+						sizes: shopItem.sizes,
+						images: shopItem.images,
+					},
 				});
+				total += currentPrice;
 			}
 
 			return res.status(200).json({
 				success: true,
-				data: cartSnap.data(),
+				items,
+				total,
 			});
 		} catch (err: any) {
 			return res.status(500).json({
@@ -52,10 +85,7 @@ const handler: NextApiHandler = async (req, res) => {
 			const cartSnap = await getDoc(cartRef);
 
 			if (!cartSnap.exists()) {
-				return res.status(404).json({
-					success: false,
-					message: "Panier introuvable.",
-				});
+				throw new Error("Panier introuvable.");
 			}
 
 			const { items } = cartSnap.data();
@@ -111,8 +141,6 @@ const handler: NextApiHandler = async (req, res) => {
 			}
 
 			const { id, size }: DeleteRequestBody = JSON.parse(req.body);
-
-			console.log(cartSnap.data());
 
 			cartSnap.data().items.forEach(async (item: CartItem) => {
 				if (item.id === id && item.size === size) {

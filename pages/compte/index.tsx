@@ -1,3 +1,4 @@
+import Head from "next/head";
 import {
 	useAuthUser,
 	withAuthUser,
@@ -10,6 +11,8 @@ import Account from "components/account/Account";
 import SignOutButton from "components/account/SignOutButton";
 import Loader from "components/misc/Loader";
 
+import { app } from "config";
+
 const Compte = () => {
 	const AuthUser = useAuthUser();
 
@@ -18,11 +21,16 @@ const Compte = () => {
 	}
 
 	return (
-		<div className="flex-grow flex flex-col gap-16 px-48 py-16">
-			<Header />
-			<Account user={AuthUser} />
-			<SignOutButton />
-		</div>
+		<>
+			<Head>
+				<title>Compte - {app.name}</title>
+			</Head>
+			<div className="flex-grow flex flex-col gap-16 px-48 py-16">
+				<Header />
+				<Account user={AuthUser} />
+				<SignOutButton />
+			</div>
+		</>
 	);
 };
 

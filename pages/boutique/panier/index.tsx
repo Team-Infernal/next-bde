@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import {
 	AuthAction,
@@ -5,7 +6,7 @@ import {
 	withAuthUser,
 	withAuthUserTokenSSR,
 } from "next-firebase-auth";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
 import CartList from "components/cart/CartList";
@@ -13,7 +14,7 @@ import CartSidebar from "components/cart/CartSidebar";
 import Error from "components/misc/Error";
 import Loader from "components/misc/Loader";
 
-import config from "config";
+import { app, router } from "config";
 
 import { cartReducer, INITIAL_STATE, ACTIONS } from "reducers/cartReducer";
 
@@ -35,7 +36,7 @@ const Panier = () => {
 
 		AuthUser.getIdToken()
 			.then(token =>
-				fetch("/api/shop/cart/recap", {
+				fetch("/api/shop/cart", {
 					method: "GET",
 					headers: {
 						Authorization: token as string,
@@ -81,25 +82,34 @@ const Panier = () => {
 	}
 
 	return (
-		<div className="flex-grow flex flex-col gap-16 py-16 px-48 animate-fade-in-up">
-			{AuthUser.email && (
-				<>
-					<div className="col-span-3">
-						<h1 className="text-3xl font-semibold">Votre panier</h1>
-						<Link href={config.router.shop.path}>
-							<a className="link link-hover">Retour à la boutique</a>
-						</Link>
-					</div>
-					<div className="grid grid-cols-3 gap-16">
-						<CartList
-							cart={state.cart}
-							dispatch={dispatch}
-						/>
-						<CartSidebar total={state.total} />
-					</div>
-				</>
-			)}
-		</div>
+		<>
+			<Head>
+				<title>Votre panier - {app.name}</title>
+			</Head>
+			<div className="flex-grow flex flex-col gap-16 py-16 px-48 animate-fade-in-up">
+				{AuthUser.email && (
+					<>
+						<div className="col-span-3">
+							<h1 className="text-3xl font-semibold">
+								Votre panier {state.cart.length === 0 && "est vide..."}
+							</h1>
+							<Link href={router.shop.path}>
+								<a className="link link-hover">Retour à la boutique</a>
+							</Link>
+						</div>
+						{state.cart.length !== 0 && (
+							<div className="grid grid-cols-3 gap-16">
+								<CartList
+									cart={state.cart}
+									dispatch={dispatch}
+								/>
+								<CartSidebar total={state.total} />
+							</div>
+						)}
+					</>
+				)}
+			</div>
+		</>
 	);
 };
 

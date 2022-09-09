@@ -1,10 +1,17 @@
-import type { NextPage } from "next";
+import Head from "next/head";
 
-const Accueil: NextPage = () => {
+import { app } from "config";
+
+const Accueil = () => {
 	return (
-		<div className="flex-grow">
-			<h1>Hello world</h1>
-		</div>
+		<>
+			<Head>
+				<title>{app.name}</title>
+			</Head>
+			<div className="flex-grow">
+				<h1>Hello world</h1>
+			</div>
+		</>
 	);
 };
 

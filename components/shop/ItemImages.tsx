@@ -6,6 +6,7 @@ const ItemImages = () => {
 			src="https://placeimg.com/800/800/arch"
 			width={600}
 			height={600}
+			alt={""}
 		/>
 	);
 };

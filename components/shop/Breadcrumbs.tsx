@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import config from "config";
+import { router } from "config";
 
 type Props = {
 	parentPageName?: string;
@@ -12,8 +12,8 @@ const Breadcrumbs = ({ parentPageName, currentPageName }: Props) => {
 		<div className="text-sm breadcrumbs py-8">
 			<ul>
 				<li>
-					<Link href={config.router.shop.path}>
-						<a>{config.router.shop.name}</a>
+					<Link href={router.shop.path}>
+						<a>{router.shop.name}</a>
 					</Link>
 				</li>
 				{parentPageName && <li>{parentPageName}</li>}

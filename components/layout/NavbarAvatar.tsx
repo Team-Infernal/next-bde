@@ -1,7 +1,7 @@
 import Image from "next/future/image";
 import Link from "next/link";
 
-import config from "config";
+import { router } from "config";
 
 import gravatar from "utils/gravatar";
 
@@ -13,7 +13,7 @@ const NavbarAvatar = ({ email }: Props) => {
 	return (
 		<div className="avatar">
 			<div className="w-12 rounded-full">
-				<Link href={config.router.account.path}>
+				<Link href={router.account.path}>
 					<a>
 						<Image
 							src={gravatar(email || "")}

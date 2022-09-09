@@ -1,13 +1,13 @@
 import { init } from "next-firebase-auth";
 
-import config from "config";
+import { api, router } from "config";
 
 const initAuth = () => {
 	init({
-		authPageURL: config.router.signin.path,
-		appPageURL: config.router.home.path,
-		loginAPIEndpoint: config.api.signin.route,
-		logoutAPIEndpoint: config.api.signout.route,
+		authPageURL: router.signin.path,
+		appPageURL: router.home.path,
+		loginAPIEndpoint: api.signin,
+		logoutAPIEndpoint: api.signout,
 		onLoginRequestError: err => {
 			console.error(err);
 		},

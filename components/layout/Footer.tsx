@@ -1,29 +1,7 @@
-import config from "config";
 import Image from "next/future/image";
 import Link from "next/link";
 
-const aboutLinks = [
-	{
-		name: "BDE CESI ROUEN",
-		path: config.router.home.path,
-	},
-	{
-		name: "Les événements",
-		path: config.router.events.path,
-	},
-	{
-		name: "L'équipe",
-		path: config.router.team.path,
-	},
-	{
-		name: "Les clubs",
-		path: config.router.clubs.path,
-	},
-	{
-		name: "Notre boutique",
-		path: config.router.shop.path,
-	},
-];
+import { app, footer } from "config";
 
 const Footer = () => {
 	return (
@@ -40,7 +18,7 @@ const Footer = () => {
 			</div>
 			<div>
 				<span className="footer-title">À propos de nous</span>
-				{aboutLinks.map(link => (
+				{footer.about.map(link => (
 					<Link
 						href={link.path}
 						key={link.path}
@@ -51,7 +29,7 @@ const Footer = () => {
 			</div>
 			<div>
 				<span className="footer-title">Nos réseaux</span>
-				{config.socials.map(social => (
+				{app.socials.map(social => (
 					<a
 						key={social.name}
 						href={social.link}
@@ -63,10 +41,10 @@ const Footer = () => {
 					</a>
 				))}
 			</div>
-			{config.partners.length !== 0 && (
+			{app.partners.length !== 0 && (
 				<div>
 					<span className="footer-title">Nos partenaires</span>
-					{config.partners.map(social => (
+					{app.partners.map(social => (
 						<a
 							key={social.name}
 							href={social.link}

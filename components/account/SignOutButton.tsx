@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { getAuth, signOut } from "firebase/auth";
 
-import config from "config";
+import { router } from "config";
+
+const localRouter = router;
 
 const SignOutButton = () => {
 	const router = useRouter();
@@ -13,7 +15,7 @@ const SignOutButton = () => {
 	const handleSignOut = () => {
 		setLoading(true);
 		signOut(auth).then(() => {
-			router.push(config.router.home.path);
+			router.push(localRouter.home.path);
 			setLoading(false);
 		});
 	};

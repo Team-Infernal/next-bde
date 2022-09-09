@@ -1,20 +1,23 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
+import cn from "classnames";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import Image from "next/future/image";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
 	AuthAction,
 	withAuthUser,
 	withAuthUserTokenSSR,
 } from "next-firebase-auth";
-import cn from "classnames";
+import { useState } from "react";
 
-import config from "config";
+import { api, app, router } from "config";
 
 import { verifyEmail, passChars } from "utils/formVerification";
 import errMsg from "utils/firebaseErrors";
 import sleep from "utils/sleep";
-import Link from "next/link";
+
+const localRouter = router;
 
 const SignUp = () => {
 	const [email, setEmail] = useState("");
@@ -99,7 +102,7 @@ const SignUp = () => {
 			lastName: cleanLastName,
 		};
 
-		const response = await fetch(config.api.signup.route, {
+		const response = await fetch(api.signup, {
 			method: "POST",
 			body: JSON.stringify(body),
 			headers: {
@@ -119,7 +122,7 @@ const SignUp = () => {
 		signInWithEmailAndPassword(auth, cleanEmail, cleanPassword)
 			.then(async () => {
 				await sleep(500);
-				router.push(config.router.account.path);
+				router.push(localRouter.account.path);
 			})
 			.catch(error => {
 				setError(errMsg(error.code));
@@ -128,102 +131,109 @@ const SignUp = () => {
 	};
 
 	return (
-		<div className="flex flex-grow">
-			<div className="flex flex-col justify-center bg-base-100 shadow-xl z-30 px-20 w-1/3">
-				<div className="form-control">
-					<h2 className="text-3xl font-bold">Créer un compte</h2>
-					<div>
-						<div className="flex gap-4">
-							<div className="form-control">
-								<label className="label">
-									<span className="label-text">Prénom</span>
-								</label>
-								<input
-									type="text"
-									className="input input-bordered input-primary w-full"
-									placeholder="Prénom"
-									onChange={e =>
-										handleInputChange(setFirstName, e.target.value)
-									}
-								/>
+		<>
+			<Head>
+				<title>Créer un compte - {app.name}</title>
+			</Head>
+			<div className="flex flex-grow">
+				<div className="flex flex-col justify-center bg-base-100 shadow-xl z-30 px-20 w-1/3">
+					<div className="form-control">
+						<h2 className="text-3xl font-bold">Créer un compte</h2>
+						<div>
+							<div className="flex gap-4">
+								<div className="form-control">
+									<label className="label">
+										<span className="label-text">Prénom</span>
+									</label>
+									<input
+										type="text"
+										className="input input-bordered input-primary w-full"
+										placeholder="Prénom"
+										onChange={e =>
+											handleInputChange(setFirstName, e.target.value)
+										}
+									/>
+								</div>
+
+								<div className="form-control">
+									<label className="label">
+										<span className="label-text">Nom</span>
+									</label>
+									<input
+										type="text"
+										className="input input-bordered input-primary w-full"
+										placeholder="Nom"
+										onChange={e =>
+											handleInputChange(setLastName, e.target.value)
+										}
+									/>
+								</div>
 							</div>
 
-							<div className="form-control">
-								<label className="label">
-									<span className="label-text">Nom</span>
-								</label>
-								<input
-									type="text"
-									className="input input-bordered input-primary w-full"
-									placeholder="Nom"
-									onChange={e => handleInputChange(setLastName, e.target.value)}
-								/>
-							</div>
+							<label className="label">
+								<span className="label-text">Adresse mail</span>
+							</label>
+							<input
+								type="text"
+								className="input input-bordered input-primary w-full"
+								placeholder="Adresse mail"
+								onChange={e => handleInputChange(setEmail, e.target.value)}
+							/>
+
+							<label className="label">
+								<span className="label-text">Mot de passe</span>
+							</label>
+							<input
+								type="password"
+								className="input input-bordered input-primary w-full"
+								placeholder="**********"
+								onChange={e => handleInputChange(setPassword, e.target.value)}
+							/>
+
+							<label className="label">
+								<span className="label-text">Confirmation du mot de passe</span>
+							</label>
+							<input
+								type="password"
+								className="input input-bordered input-primary w-full"
+								placeholder="**********"
+								onChange={e =>
+									handleInputChange(setPasswordConfirm, e.target.value)
+								}
+							/>
 						</div>
-
-						<label className="label">
-							<span className="label-text">Adresse mail</span>
-						</label>
-						<input
-							type="text"
-							className="input input-bordered input-primary w-full"
-							placeholder="Adresse mail"
-							onChange={e => handleInputChange(setEmail, e.target.value)}
-						/>
-
-						<label className="label">
-							<span className="label-text">Mot de passe</span>
-						</label>
-						<input
-							type="password"
-							className="input input-bordered input-primary w-full"
-							placeholder="**********"
-							onChange={e => handleInputChange(setPassword, e.target.value)}
-						/>
-
-						<label className="label">
-							<span className="label-text">Confirmation du mot de passe</span>
-						</label>
-						<input
-							type="password"
-							className="input input-bordered input-primary w-full"
-							placeholder="**********"
-							onChange={e =>
-								handleInputChange(setPasswordConfirm, e.target.value)
-							}
-						/>
-					</div>
-					<button
-						onClick={() => handleSignUpClick()}
-						className={cn("btn mt-4", {
-							"btn-primary": !error,
-							"btn-warning": error,
-							loading: loading,
-						})}
-					>
-						{loading
-							? "Création de votre compte..."
-							: !error
-							? "S'enregistrer"
-							: error}
-					</button>
-					<div className="divider">OU</div>
-					<Link href={config.router.signin.path}>
-						<button className="btn btn-primary">
-							<a>Se connecter</a>
+						<button
+							onClick={() => handleSignUpClick()}
+							className={cn("btn mt-4", {
+								"btn-primary": !error,
+								"btn-warning": error,
+								loading: loading,
+							})}
+						>
+							{loading
+								? "Création de votre compte..."
+								: !error
+								? "S'enregistrer"
+								: error}
 						</button>
-					</Link>
+						<div className="divider">OU</div>
+						<Link href={localRouter.signin.path}>
+							<button className="btn btn-primary">
+								<a>Se connecter</a>
+							</button>
+						</Link>
+					</div>
+				</div>
+				<div className="flex justify-center items-center bg-base-100 flex-grow">
+					<Image
+						src="/img/logo.svg"
+						height={800}
+						width={800}
+						alt="Logo du BDE CESI Rouen"
+					/>
 				</div>
 			</div>
-			<div className="flex justify-center items-center bg-base-100 flex-grow">
-				<Image
-					src="/img/logo.svg"
-					height={800}
-					width={800}
-					alt="Logo du BDE CESI Rouen"
-				/>
-			</div>
-		</div>
+		</>
 	);
 };
 

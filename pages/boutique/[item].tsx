@@ -6,9 +6,12 @@ import {
 	getFirestore,
 } from "firebase/firestore";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 
 import Breadcrumbs from "components/shop/Breadcrumbs";
 import Item from "components/shop/Item";
+
+import { app } from "config";
 
 import db from "lib/initApp";
 
@@ -20,13 +23,20 @@ type Props = {
 
 const ItemPage = ({ item }: Props) => {
 	return (
-		<div className="flex-grow pb-8 px-48">
-			<Breadcrumbs
-				parentPageName={item.category}
-				currentPageName={item.name}
-			/>
-			<Item item={item} />
-		</div>
+		<>
+			<Head>
+				<title>
+					{item.name} - Boutique - {app.name}
+				</title>
+			</Head>
+			<div className="flex-grow pb-8 px-48">
+				<Breadcrumbs
+					parentPageName={item.category}
+					currentPageName={item.name}
+				/>
+				<Item item={item} />
+			</div>
+		</>
 	);
 };
 

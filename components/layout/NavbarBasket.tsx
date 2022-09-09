@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuthUser } from "next-firebase-auth";
 import { useEffect, useState } from "react";
 
-import config from "config";
+import { router } from "config";
 
 const NavbarBasket = () => {
 	const AuthUser = useAuthUser();
@@ -42,7 +42,7 @@ const NavbarBasket = () => {
 	if (cartSize === 0) {
 		return (
 			<div>
-				<Link href={config.router.cart.path}>
+				<Link href={router.cart.path}>
 					<a>
 						<button className="btn btn-ghost w-12 rounded-full">
 							<FontAwesomeIcon
@@ -58,7 +58,7 @@ const NavbarBasket = () => {
 
 	return (
 		<div>
-			<Link href={config.router.cart.path}>
+			<Link href={router.cart.path}>
 				<a>
 					<div className="indicator">
 						<span className="indicator-item indicator-bottom indicator-center badge badge-primary">

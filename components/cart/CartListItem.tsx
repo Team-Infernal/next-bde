@@ -75,7 +75,7 @@ const CartListItem = ({ item, dispatch }: Props) => {
 						})}
 						onClick={() => handleDeleteClick()}
 					>
-						Supprimer
+						{loading ? "Suppression..." : "Supprimer"}
 					</div>
 				</div>
 			</div>
