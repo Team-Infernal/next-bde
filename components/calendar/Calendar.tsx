@@ -116,7 +116,7 @@ const Calendar = () => {
 			/>
 			<div className="shadow-lg rounded-lg p-4">
 				<div className="bg-base-200">
-					<div className="grid grid-cols-7 gap-[1px] border-[1px] border-base-200">
+					<div className="grid grid-cols-1 lg:grid-cols-7 gap-[1px] border-[1px] border-base-200">
 						{days.map((day, index) => (
 							<CalendarDayHeader
 								key={day}

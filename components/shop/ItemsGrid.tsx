@@ -1,14 +1,18 @@
 import ItemCard from "components/shop/ItemCard";
 
-const items = new Array(25).fill("Item");
+import { ShopItem } from "types";
 
-const ItemsGrid = () => {
+type Props = {
+	items: ShopItem[];
+};
+
+const ItemsGrid = ({ items }: Props) => {
 	return (
-		<div className="grid grid-cols-3 gap-16">
+		<div className="grid lg:grid-cols-3 gap-16">
 			{items.map((item, index) => (
 				<ItemCard
-					key={`item-${index}`}
-					id={index}
+					key={`item-${item.id}`}
+					item={item}
 				/>
 			))}
 		</div>

@@ -3,26 +3,27 @@ import Link from "next/link";
 
 import { router } from "config";
 
+import { ShopItem } from "types";
+
 type Props = {
-	id: number;
+	item: ShopItem;
 };
 
-const ItemCard = ({ id }: Props) => {
+const ItemCard = ({ item }: Props) => {
 	return (
 		<div className="card card-compact w-full bg-base-100 shadow-xl">
 			<figure>
 				<Image
-					src={"https://placeimg.com/800/450/arch"}
+					src={item.images[0]}
 					width={800}
 					height={450}
-					alt={""}
+					alt={item.name}
 				/>
 			</figure>
 			<div className="card-body">
-				<h2 className="card-title">Item {id}</h2>
-				<p>Item {id} description</p>
+				<h2 className="card-title">{item.name}</h2>
 				<div className="card-actions justify-end">
-					<Link href={`${router.shop.path}/item-${id}`}>
+					<Link href={`${router.shop.path}/${item.id}`}>
 						<a>
 							<button className="btn btn-primary">Voir plus</button>
 						</a>

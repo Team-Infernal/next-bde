@@ -10,7 +10,7 @@ const Clubs = () => {
 			<Head>
 				<title>Clubs - {app.name}</title>
 			</Head>
-			<div className="flex-grow flex justify-center items-center">
+			<div className="flex-grow flex justify-center items-center h-screen lg:h-fit">
 				<Unavailable />
 			</div>
 		</>

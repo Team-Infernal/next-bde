@@ -19,7 +19,15 @@ const CalendarDay = ({ day, events }: Props) => {
 	const isToday = day.iso === formatISO(now, { representation: "date" });
 
 	return (
-		<div className="h-48 bg-base-100 p-4 flex flex-col gap-4">
+		<div
+			className={cn(
+				"h-48 bg-base-100 p-4 flex-col gap-4",
+				{
+					hidden: day.type !== "current",
+				},
+				"lg:flex"
+			)}
+		>
 			<div
 				className={cn("font-semibold", {
 					"text-base-300": day.type !== "current",

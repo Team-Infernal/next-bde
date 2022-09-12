@@ -1,22 +1,71 @@
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import Head from "next/head";
 
 import Header from "components/shop/Header";
 import ItemsGrid from "components/shop/ItemsGrid";
+import Error from "components/misc/Error";
 
 import { app } from "config";
 
-const Shop = () => {
+import db from "lib/initApp";
+
+import { ShopItem } from "types";
+
+type Props = {
+	items: ShopItem[];
+	success: boolean;
+};
+
+const Shop = ({ items, success }: Props) => {
 	return (
 		<>
 			<Head>
 				<title>Boutique - {app.name}</title>
 			</Head>
-			<div className="flex-grow flex flex-col gap-16 py-16 px-48">
+			<div className="flex-grow flex flex-col gap-8 lg:gap-16 py-8 lg:py-16 px-8 lg:px-48">
 				<Header />
-				<ItemsGrid />
+				{success ? (
+					<ItemsGrid items={items} />
+				) : (
+					<Error message="Erreur lors du chargement de la boutique. Veuillez réessayer." />
+				)}
 			</div>
 		</>
 	);
+};
+
+export const getServerSideProps = async () => {
+	try {
+		const firestore = getFirestore(db);
+		const itemsSnap = await getDocs(collection(firestore, "shop"));
+
+		let items: ShopItem[] = [];
+
+		itemsSnap.forEach(doc => {
+			if (!doc.exists()) {
+				return;
+			}
+			const data = doc.data();
+			items.push({
+				...(data as ShopItem),
+				id: doc.id,
+			});
+		});
+
+		return {
+			props: {
+				items,
+				success: true,
+			},
+		};
+	} catch (err) {
+		return {
+			props: {
+				items: [],
+				succes: false,
+			},
+		};
+	}
 };
 
 export default Shop;
