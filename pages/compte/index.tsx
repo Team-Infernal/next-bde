@@ -34,7 +34,6 @@ const Compte = () => {
 	);
 };
 
-
 export default withAuthUser({
 	whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(Compte);
