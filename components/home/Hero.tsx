@@ -3,7 +3,7 @@ import Image from "next/future/image";
 const Hero = () => {
 	return (
 		<div
-			className="hero min-h-screen bg-base-100 invisible"
+			className="px-8 sm:px-0 hero min-h-screen bg-base-100 invisible"
 			data-animate
 		>
 			<div className="hero-content text-center">

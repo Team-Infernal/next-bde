@@ -4,7 +4,6 @@ type HighlightProps = {
 
 type ObjectiveProps = {
 	children: React.ReactNode;
-	delay: number;
 };
 
 const Highlight = ({ children }: HighlightProps) => {
@@ -15,12 +14,9 @@ const Highlight = ({ children }: HighlightProps) => {
 	);
 };
 
-const Objective = ({ children, delay }: ObjectiveProps) => {
+const Objective = ({ children }: ObjectiveProps) => {
 	return (
-		<div
-			className="flex items-center bg-gray-900 p-12 rounded-lg transition-shadow shadow-lg hover:shadow-xl hover:shadow-primary invisible group"
-			data-animate={delay}
-		>
+		<div className="flex items-center bg-gray-900 p-12 rounded-lg transition-shadow shadow-lg hover:shadow-xl hover:shadow-primary group">
 			<p className="text-center">{children}</p>
 		</div>
 	);
@@ -66,32 +62,28 @@ const objectives = [Objective1, Objective2, Objective3, Objective4, Objective5];
 
 const Objectives = () => {
 	return (
-		<div className="min-h-[80vh] px-48 py-32 bg-gray-800 flex border-t-8 border-b-8 border-primary">
+		<div className="min-h-[80vh] px-16 sm:px-24 xl:px-48 py-16 sm:py-24 xl:py-32 bg-gray-800 flex border-t-8 border-b-8 border-primary">
 			<div
-				className="text-neutral flex-grow flex flex-col gap-32 justify-between invisible"
+				className="text-neutral flex-grow flex flex-col gap-16 sm:gap-32 justify-between invisible"
 				data-animate
 			>
 				<h2 className="text-4xl font-semibold">Nos objectifs</h2>
 
 				<div className="flex flex-col gap-16 cursor-default">
-					<div className="grid grid-cols-3 gap-16 text-3xl">
+					<div
+						className="grid grid-cols-1 xl:grid-cols-3 gap-16 text-3xl invisible"
+						data-animate
+					>
 						{objectives.slice(0, 3).map((objective, index) => (
-							<Objective
-								key={`1-${index}`}
-								delay={(index + 1) * 250}
-							>
-								{objective()}
-							</Objective>
+							<Objective key={`1-${index}`}>{objective()}</Objective>
 						))}
 					</div>
-					<div className="grid grid-cols-2 gap-16 text-3xl">
+					<div
+						className="grid grid-cols-1 xl:grid-cols-2 gap-16 text-3xl invisible"
+						data-animate
+					>
 						{objectives.slice(3, 5).map((objective, index) => (
-							<Objective
-								key={`2-${index}`}
-								delay={(index + 1) * 250}
-							>
-								{objective()}
-							</Objective>
+							<Objective key={`2-${index}`}>{objective()}</Objective>
 						))}
 					</div>
 				</div>
