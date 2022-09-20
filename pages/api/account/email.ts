@@ -6,13 +6,12 @@ const { auth } = getFirebaseAdmin();
 const handler: NextApiHandler = async (req, res) => {
 	if (req.method === "PUT") {
 		try {
-			const AuthUser = await verifyIdToken(req.headers.authorization as string);
-			const body = JSON.parse(req.body);
-			const email = body.email as string;
+			const AuthUser = await verifyIdToken(req.headers.authorization || "");
+			const email: string = JSON.parse(req.body);
 			const cleanEmail = email.trim().toLowerCase();
 
 			return auth()
-				.updateUser(AuthUser.id as string, {
+				.updateUser(AuthUser.id || "", {
 					email: cleanEmail,
 				})
 				.then(userRecord => {

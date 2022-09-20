@@ -1,10 +1,5 @@
 import Head from "next/head";
-import {
-	useAuthUser,
-	withAuthUser,
-	withAuthUserTokenSSR,
-	AuthAction,
-} from "next-firebase-auth";
+import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
 
 import Header from "components/account/Header";
 import Account from "components/account/Account";
@@ -17,7 +12,7 @@ const Compte = () => {
 	const AuthUser = useAuthUser();
 
 	if (!AuthUser.firebaseUser) {
-		return <Loader scale={3} />;
+		return <Loader />;
 	}
 
 	return (
@@ -26,7 +21,7 @@ const Compte = () => {
 				<title>Compte - {app.name}</title>
 			</Head>
 			<div className="flex-grow flex flex-col gap-16 px-48 py-16">
-				<Header />
+				<Header name={AuthUser.displayName} />
 				<Account user={AuthUser} />
 				<SignOutButton />
 			</div>
@@ -35,5 +30,6 @@ const Compte = () => {
 };
 
 export default withAuthUser({
+	LoaderComponent: Loader,
 	whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(Compte);
