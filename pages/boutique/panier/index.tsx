@@ -1,20 +1,15 @@
-import Head from "next/head";
 import Link from "next/link";
-import {
-	AuthAction,
-	useAuthUser,
-	withAuthUser,
-	withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import { useEffect, useReducer } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
+import Title from "components/misc/Title";
 import CartList from "components/cart/CartList";
 import CartSidebar from "components/cart/CartSidebar";
 import Error from "components/misc/Error";
 import Loader from "components/misc/Loader";
 
-import { app, router } from "config";
+import { router } from "config";
 
 import { cartReducer, INITIAL_STATE, ACTIONS } from "reducers/cartReducer";
 
@@ -83,9 +78,7 @@ const Panier = () => {
 
 	return (
 		<>
-			<Head>
-				<title>Votre panier - {app.name}</title>
-			</Head>
+			<Title text="Votre panier" />
 			<div className="flex-grow flex flex-col gap-16 py-16 px-48 animate-fade-in-up">
 				{AuthUser.email && (
 					<>

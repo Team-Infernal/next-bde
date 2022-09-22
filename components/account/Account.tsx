@@ -1,5 +1,6 @@
 import { AuthUser } from "next-firebase-auth";
 
+import Tabs from "components/account/Tabs";
 import UserInfoContainer from "components/account/info/UserInfoContainer";
 
 type Props = {
@@ -8,9 +9,12 @@ type Props = {
 
 const Account = ({ user }: Props) => {
 	return (
-		<div className="grid grid-cols-2 gap-16">
-			<UserInfoContainer user={user} />
-		</div>
+		<>
+			<Tabs user={user} />
+			<div className="grid grid-cols-2 gap-16">
+				<UserInfoContainer user={user} />
+			</div>
+		</>
 	);
 };
 

@@ -1,10 +1,14 @@
+import Title from "components/misc/Title";
 import Calendar from "components/calendar/Calendar";
 
 const Events = () => {
 	return (
-		<div className="p-2 lg:p-8">
-			<Calendar />
-		</div>
+		<>
+			<Title text="Événements" />
+			<div className="p-2 lg:p-8">
+				<Calendar />
+			</div>
+		</>
 	);
 };
 

@@ -1,13 +1,9 @@
-import Head from "next/head";
-
-import { app } from "config";
+import Title from "components/misc/Title";
 
 const PaymentSuccess = () => {
 	return (
 		<>
-			<Head>
-				<title>Paiement effectué! - {app.name}</title>
-			</Head>
+			<Title text="Paiement réussi!" />
 			<div className="flex-grow"></div>;
 		</>
 	);

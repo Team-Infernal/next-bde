@@ -6,12 +6,10 @@ import {
 	getFirestore,
 } from "firebase/firestore";
 import { GetStaticPaths, GetStaticProps } from "next";
-import Head from "next/head";
 
+import Title from "components/misc/Title";
 import Breadcrumbs from "components/shop/Breadcrumbs";
 import Item from "components/shop/Item";
-
-import { app } from "config";
 
 import db from "lib/initApp";
 
@@ -24,11 +22,7 @@ type Props = {
 const ItemPage = ({ item }: Props) => {
 	return (
 		<>
-			<Head>
-				<title>
-					{item.name} - Boutique - {app.name}
-				</title>
-			</Head>
+			<Title text={`${item.name} - Boutique`} />
 			<div className="flex-grow pb-8 px-48">
 				<Breadcrumbs
 					parentPageName={item.category}

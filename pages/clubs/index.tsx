@@ -1,15 +1,10 @@
-import Head from "next/head";
-
+import Title from "components/misc/Title";
 import Unavailable from "components/misc/Unavailable";
-
-import { app } from "config";
 
 const Clubs = () => {
 	return (
 		<>
-			<Head>
-				<title>Clubs - {app.name}</title>
-			</Head>
+			<Title text="Clubs" />
 			<div className="flex-grow flex justify-center items-center h-screen lg:h-fit">
 				<Unavailable />
 			</div>

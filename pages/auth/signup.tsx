@@ -1,7 +1,6 @@
 import cn from "classnames";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/future/image";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -11,13 +10,13 @@ import {
 } from "next-firebase-auth";
 import { useState } from "react";
 
-import { api, app, router } from "config";
+import Title from "components/misc/Title";
+
+import { api, router as localRouter } from "config";
 
 import { verifyEmail, passChars } from "utils/formVerification";
 import errMsg from "utils/firebaseErrors";
 import sleep from "utils/sleep";
-
-const localRouter = router;
 
 const SignUp = () => {
 	const [email, setEmail] = useState("");
@@ -132,9 +131,7 @@ const SignUp = () => {
 
 	return (
 		<>
-			<Head>
-				<title>Créer un compte - {app.name}</title>
-			</Head>
+			<Title text="Créer un compte" />
 			<div className="flex flex-grow">
 				<div className="flex flex-col justify-center bg-base-100 shadow-xl z-30 p-5 lg:px-20 lg:w-1/3 w-full">
 					<div className="form-control">

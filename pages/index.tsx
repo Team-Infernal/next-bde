@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useEffect } from "react";
 
+import AnnouncementsBanner from "components/misc/AnnouncementsBanner";
 import Hero from "components/home/Hero";
 import WhyThisName from "components/home/WhyThisName";
 import Objectives from "components/home/Objectives";
@@ -10,6 +11,8 @@ import { app } from "config";
 import sleep from "utils/sleep";
 
 const Accueil = () => {
+	const title = app.name;
+
 	useEffect(() => {
 		let observer = new IntersectionObserver(
 			(entries, observer) => {
@@ -40,9 +43,10 @@ const Accueil = () => {
 	return (
 		<>
 			<Head>
-				<title>{app.name}</title>
+				<title>{title}</title>
 			</Head>
 			<div className="flex-grow">
+				<AnnouncementsBanner />
 				<Hero />
 				<WhyThisName />
 				<Objectives />

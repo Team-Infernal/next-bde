@@ -1,11 +1,9 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
-import Head from "next/head";
 
+import Title from "components/misc/Title";
 import Header from "components/shop/Header";
 import ItemsGrid from "components/shop/ItemsGrid";
 import Error from "components/misc/Error";
-
-import { app } from "config";
 
 import db from "lib/initApp";
 
@@ -19,9 +17,7 @@ type Props = {
 const Shop = ({ items, success }: Props) => {
 	return (
 		<>
-			<Head>
-				<title>Boutique - {app.name}</title>
-			</Head>
+			<Title text="Boutique" />
 			<div className="flex-grow flex flex-col gap-8 lg:gap-16 py-8 lg:py-16 px-8 lg:px-48">
 				<Header />
 				{success ? (

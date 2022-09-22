@@ -1,15 +1,12 @@
-import Head from "next/head";
-
+import Title from "components/misc/Title";
 import TeamMemberCard from "components/team/TeamMemberCard";
 
-import { app, team } from "config";
+import { team } from "config";
 
 const Team = () => {
 	return (
 		<>
-			<Head>
-				<title>Équipe - {app.name}</title>
-			</Head>
+			<Title text="Équipe" />
 			<div className="flex flex-col gap-16 items-center my-10">
 				<h1 className="text-3xl font-bold">Présidence</h1>
 				<div className="flex flex-wrap justify-center gap-8">

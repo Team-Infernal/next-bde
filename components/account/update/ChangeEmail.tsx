@@ -110,10 +110,10 @@ const ChangeEmail = () => {
 				})}
 				onClick={() => handleEmailValidate()}
 			>
-				{errors.length > 0
-					? errors[0]?.replace(/\.$/, "")
-					: loading
+				{loading
 					? "Modification en cours..."
+					: errors.length > 0
+					? errors[0]?.replace(/\.$/, "")
 					: "Valider la modification"}
 			</button>
 		</div>

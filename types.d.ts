@@ -1,4 +1,4 @@
-import { DocumentReference } from "firebase/firestore";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 
 type EventResponse = {
 	name: string;
@@ -47,4 +47,13 @@ type ShopAllItemSizes = ["xs", "s", "m", "l", "xl", "2xl"];
 type Action = {
 	type: string;
 	payload?: any;
+};
+
+type Announcement = {
+	id: string;
+	content: string;
+	path: string | null;
+	type: "info" | "important";
+	startDateTime: Timestamp;
+	endDateTime: Timestamp;
 };
