@@ -201,19 +201,18 @@ const SignUp = () => {
 								}
 							/>
 						</div>
+						{error && (
+							<p className="alert alert-warning rounded-lg mt-4 text-center">
+								{error}
+							</p>
+						)}
 						<button
 							onClick={() => handleSignUpClick()}
-							className={cn("btn mt-4", {
-								"btn-primary": !error,
-								"btn-warning": error,
+							className={cn("btn btn-primary mt-4", {
 								loading: loading,
 							})}
 						>
-							{loading
-								? "Création de votre compte..."
-								: !error
-								? "S'enregistrer"
-								: error}
+							{loading ? "Création de votre compte..." : "S'enregistrer"}
 						</button>
 						<div className="divider">OU</div>
 						<Link href={localRouter.signin.path}>

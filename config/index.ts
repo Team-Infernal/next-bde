@@ -7,6 +7,7 @@ const app: App = {
 		},
 	],
 	partners: [],
+	siteUrl: process.env.NEXT_PUBLIC_SITE_URL as string,
 };
 
 const router: Router = {
@@ -134,6 +135,11 @@ const team: Team = {
 				lastName: "AUBERT",
 				role: "Membre Pôle Événements",
 			},
+			{
+				firstName: "Nicolas",
+				lastName: "THIEULIN",
+				role: "Membre Pôle Événements",
+			},
 		],
 		club: [
 			{
@@ -164,11 +170,6 @@ const team: Team = {
 				role: "Membre Pôle Communication",
 			},
 			{
-				firstName: "Nicolas",
-				lastName: "THIEULIN",
-				role: "Membre Pôle Communication",
-			},
-			{
 				firstName: "Samuel",
 				lastName: "WARD",
 				role: "Gestionnaire Site Web",
@@ -186,6 +187,7 @@ type App = {
 	name: string;
 	socials: ExternalLink[];
 	partners: ExternalLink[];
+	siteUrl: string;
 };
 
 type Router = {

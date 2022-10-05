@@ -101,15 +101,18 @@ const SignIn = () => {
 								onChange={e => handlePasswordChange(e.target.value)}
 							/>
 						</div>
+						{error && (
+							<p className="alert alert-warning rounded-lg mt-4 text-center">
+								{error}
+							</p>
+						)}
 						<button
 							onClick={() => handleSignInClick()}
-							className={cn("btn mt-4", {
-								"btn-primary": !error,
-								"btn-warning": error,
+							className={cn("btn btn-primary mt-4", {
 								loading: loading,
 							})}
 						>
-							{loading ? "Connexion..." : !error ? "Se connecter" : error}
+							{loading ? "Connexion..." : "Se connecter"}
 						</button>
 						<div className="divider">OU</div>
 						<Link href={localRouter.signup.path}>

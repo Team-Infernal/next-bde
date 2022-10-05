@@ -27,7 +27,7 @@ const Panier = () => {
 			return;
 		}
 
-		let isCanceled = false;
+		let isCancelled = false;
 
 		AuthUser.getIdToken()
 			.then(token =>
@@ -40,8 +40,8 @@ const Panier = () => {
 			)
 			.then(response => response.json())
 			.then(data => {
-				if (!isCanceled && data.success) {
-					isCanceled = true;
+				if (!isCancelled && data.success) {
+					isCancelled = true;
 					dispatch({
 						type: ACTIONS.FETCH_SUCCESS,
 						payload: {
@@ -62,7 +62,7 @@ const Panier = () => {
 			});
 
 		return () => {
-			isCanceled = true;
+			isCancelled = true;
 		};
 	}, [AuthUser, AuthUser.id]);
 

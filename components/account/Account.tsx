@@ -10,7 +10,7 @@ type Props = {
 const Account = ({ user }: Props) => {
 	return (
 		<>
-			<Tabs user={user} />
+			{/* <Tabs user={user} /> */}
 			<div className="grid grid-cols-2 gap-16">
 				<UserInfoContainer user={user} />
 			</div>

@@ -1,6 +1,12 @@
 import cn from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+	faAngleLeft,
+	faAngleRight,
+	faExclamation,
+	faExclamationCircle,
+	faWarning,
+} from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
 import { Announcement } from "types";
@@ -43,24 +49,39 @@ const AnnouncementsBanner = () => {
 
 	const AnnouncementContent = (announcement: Announcement, seeMore = false) => {
 		return (
-			<p className="font-semibold uppercase">
-				{announcement.content}
+			<p className="font-semibold uppercase inline-flex gap-2">
+				{announcement.type === "important" && (
+					<span>
+						<FontAwesomeIcon icon={faExclamationCircle} />
+					</span>
+				)}
+				<span>{announcement.content}</span>
 				{seeMore && (
 					<>
-						{" "}
-						- <span className="underline">Voir plus</span>
+						<span>-</span>
+						<span className="underline">Voir plus</span>
 					</>
 				)}
 			</p>
 		);
 	};
 
+	const selectedA = announcements[currentAnnouncementIndex];
+
 	if (announcements.length === 0) {
 		return <></>;
 	}
 
 	return (
-		<div className="m-3 p-2 rounded-lg bg-info flex justify-between items-center gap-2 animate-fade-in-up">
+		<div
+			className={cn(
+				"m-3 p-2 mb-0 rounded-lg bg-info flex justify-between items-center gap-2 animate-fade-in-up transition-colors",
+				{
+					"bg-info": selectedA.type === "info",
+					"bg-secondary": selectedA.type === "important",
+				}
+			)}
+		>
 			<button
 				className={cn("btn btn-square btn-ghost", {
 					invisible: announcements.length === 1,
@@ -73,21 +94,18 @@ const AnnouncementsBanner = () => {
 				className={cn(
 					"flex-grow self-stretch flex items-center justify-center",
 					{
-						"cursor-pointer": !!announcements[currentAnnouncementIndex].path,
+						"cursor-pointer": !!selectedA.path,
 					}
 				)}
 			>
-				{!!announcements[currentAnnouncementIndex].path ? (
-					<Link href={announcements[currentAnnouncementIndex].path as string}>
-						<a>
-							{AnnouncementContent(
-								announcements[currentAnnouncementIndex],
-								true
-							)}
+				{!!selectedA.path ? (
+					<Link href={selectedA.path}>
+						<a className="flex-grow h-full flex justify-center items-center">
+							{AnnouncementContent(selectedA, true)}
 						</a>
 					</Link>
 				) : (
-					AnnouncementContent(announcements[currentAnnouncementIndex])
+					AnnouncementContent(selectedA)
 				)}
 			</div>
 			<button

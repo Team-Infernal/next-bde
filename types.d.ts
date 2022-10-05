@@ -57,3 +57,9 @@ type Announcement = {
 	startDateTime: Timestamp;
 	endDateTime: Timestamp;
 };
+
+type AdminInterface = {
+	id: string;
+	name: string;
+	header: string;
+};

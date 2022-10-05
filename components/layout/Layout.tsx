@@ -12,7 +12,11 @@ type Props = {
 const Layout = ({ children }: Props) => {
 	const { pathname } = useRouter();
 
-	const displayFooter = !["/auth/signin", "/auth/signup"].includes(pathname);
+	const displayFooter = ![
+		"/auth/signin",
+		"/auth/signup",
+		"/compte/admin",
+	].includes(pathname);
 
 	const drawerCheckbox = useRef<HTMLInputElement>(null);
 
